@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+:root {
+	--background: #0a0a0a;
+	--foreground: #ffffff;
+
+	--card: #111111;
+	--card-foreground: #ffffff;
+
+	--primary: #d4af37;
+	--primary-foreground: #000000;
+
+	--secondary: #1a1a1a;
+	--secondary-foreground: #ffffff;
+
+	--border: #2a2a2a;
+}
+
+body {
+	background: var(--background);
+	color: var(--foreground);
+	font-family: var(--font-inter);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+	font-family: var(--font-playfair);
+}
