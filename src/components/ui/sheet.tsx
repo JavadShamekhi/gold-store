@@ -36,10 +36,11 @@ function SheetOverlay({
   return (
     <SheetPrimitive.Overlay
       data-slot="sheet-overlay"
+      style={{ animationDuration: '500ms' }}
       className={cn(
-        "fixed inset-0 z-50 bg-black/40 supports-backdrop-filter:backdrop-blur-md",
-		      "data-open:animate-in data-open:fade-in-0 data-open:duration-700 data-open:ease-in-out",
-		      "data-closed:animate-out data-closed:fade-out-0 data-closed:duration-500",
+        "fixed inset-0 z-50 bg-black/10 supports-backdrop-filter:backdrop-blur-md",
+		      "data-open:animate-in data-open:fade-in-0",
+		      "data-closed:animate-out data-closed:fade-out-0",
         className
       )}
       {...props}
@@ -63,26 +64,24 @@ function SheetContent({
       <SheetPrimitive.Content
         data-slot="sheet-content"
         data-side={side}
+        style={{
+	        animationDuration: '750ms',
+	        animationTimingFunction: 'cubic-bezier(0.32, 0.72, 0, 1)'
+        }}
         className={cn(
-		        "fixed z-50 flex flex-col gap-4 bg-popover bg-clip-padding text-sm text-popover-foreground shadow-lg",
-		        // 1. We apply the duration and easing to the ANIMATION states specifically
-		        "data-open:animate-in data-open:duration-700 data-open:ease-in-out",
-		        "data-closed:animate-out data-closed:duration-500 data-closed:ease-in-out",
+		        "fixed z-50 flex flex-col gap-4 bg-[#0a0a0a] bg-clip-padding text-sm text-popover-foreground shadow-lg",
 
-		        // 2. The side-specific animations
-		        "data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:border-t data-[side=bottom]:data-open:slide-in-from-bottom-full",
-		        "data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 data-[side=left]:border-r data-[side=left]:data-open:slide-in-from-left-full",
-		        "data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:border-l data-[side=right]:data-open:slide-in-from-right-full",
-		        "data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:border-b data-[side=top]:data-open:slide-in-from-top-full",
+		        // Animation triggers
+		        "data-open:animate-in data-closed:animate-out",
 
-		        // 3. Exit animations
-		        "data-[side=bottom]:data-closed:slide-out-to-bottom-full",
-		        "data-[side=left]:data-closed:slide-out-to-left-full",
-		        "data-[side=right]:data-closed:slide-out-to-right-full",
-		        "data-[side=top]:data-closed:slide-out-to-top-full",
+		        // Side-specific sliding (using full distance for smoothness)
+		        "data-[side=bottom]:inset-x-0 data-[side=bottom]:bottom-0 data-[side=bottom]:data-open:slide-in-from-bottom-full data-[side=bottom]:data-closed:slide-out-to-bottom-full",
+		        "data-[side=left]:inset-y-0 data-[side=left]:left-0 data-[side=left]:h-full data-[side=left]:w-3/4 data-[side=left]:data-open:slide-in-from-left-full data-[side=left]:data-closed:slide-out-to-left-full",
+		        "data-[side=right]:inset-y-0 data-[side=right]:right-0 data-[side=right]:h-full data-[side=right]:w-3/4 data-[side=right]:data-open:slide-in-from-right-full data-[side=right]:data-closed:slide-out-to-right-full",
+		        "data-[side=top]:inset-x-0 data-[side=top]:top-0 data-[side=top]:data-open:slide-in-from-top-full data-[side=top]:data-closed:slide-out-to-top-full",
 
 		        "sm:max-w-sm",
-          className
+						className
         )}
         {...props}
       >
