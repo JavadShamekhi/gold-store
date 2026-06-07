@@ -22,6 +22,7 @@ const ProductCard = ({ product }: Props) => {
 								src={product.image}
 								alt={product.title}
 								fill
+								sizes="(max-width), (max-height)"
 								className="object-cover group-hover:scale-110 transition duration-500"
 						/>
 					</div>
