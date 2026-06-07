@@ -2,9 +2,12 @@ import Navbar from '@/src/components/layout/navbar';
 import Container from '@/src/components/layout/container';
 import ProductCard from '@/src/components/product/product-card';
 
-import { products } from '@/src/lib/products';
+import { prisma } from '@/src/lib/prisma';
 
-export default function Home() {
+export default async function Home() {
+
+	const products = await prisma.product.findMany();
+
 	return (
 			<main>
 				<Navbar />
