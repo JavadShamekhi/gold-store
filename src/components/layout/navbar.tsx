@@ -1,9 +1,14 @@
+'use client';
+
 import Container from "./container";
-import {ShoppingCart, User} from "lucide-react";
+import { User} from "lucide-react";
 import Link from "next/link";
 import CartDrawer from "@/src/components/layout/cart-drawer";
+import {useAuthStore} from "@/src/store/auth-store";
 
 const Navbar = () => {
+	const user = useAuthStore((state) => state.user);
+
 	return (
 			<header className="border-b border-white/10">
 				<Container>
@@ -23,7 +28,19 @@ const Navbar = () => {
 							<CartDrawer />
 
 							<button className="hover:text-[#d4af37] transition cursor-pointer">
-								<User size={22} />
+								{/*<User size={22} />*/}
+								{user ? (
+										<span className="text-sm">
+                      {user.email}
+                    </span>
+										) : (
+										<Link
+												href="/login"
+												className="hover:text-[#d4af37]"
+										>
+											<User size={22} />
+										</Link>
+								)}
 							</button>
 						</div>
 					</div>
