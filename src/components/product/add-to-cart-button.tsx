@@ -4,7 +4,7 @@ import {useCartStore} from "@/src/store/cart-store";
 import {toast} from "sonner";
 
 type Props = {
-	id: number;
+	id: string;
 	title: string;
 	price: number;
 	image: string;

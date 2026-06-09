@@ -1,10 +1,10 @@
 'use client';
 
 import Image from 'next/image';
-
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 import Navbar from '@/src/components/layout/navbar';
 import Container from '@/src/components/layout/container';
-
 import { useCartStore } from '@/src/store/cart-store';
 
 export default function CartPage() {
@@ -13,12 +13,51 @@ export default function CartPage() {
 		removeItem,
 		increaseQuantity,
 		decreaseQuantity,
+			clearCart
 	} = useCartStore();
+
+	const router = useRouter();
 
 	const totalPrice = items.reduce(
 			(acc, item) => acc + item.price * item.quantity,
 			0
 	);
+
+	const handleCheckout = async () => {
+		try {
+			const response = await fetch('/api/orders', {
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify({
+					items: items.map((item) => ({
+						id: item.id,
+						quantity: item.quantity,
+					})),
+				}),
+			});
+
+			const data = await response.json();
+
+			if (!response.ok) {
+				throw new Error(
+						data.message || 'Checkout failed'
+				);
+			}
+
+			clearCart();
+
+			toast.success('Order created successfully.');
+
+			router.push('/');
+		} catch (error) {
+			toast.error(
+					error instanceof Error
+						? error.message
+							: 'Checkout failed'
+			);
+		}
+	};
 
 	return (
 			<main>
@@ -106,6 +145,15 @@ export default function CartPage() {
 											${totalPrice}
 										</p>
 									</div>
+
+									<button
+										onClick={handleCheckout}
+										className="w-full mt-8 bg-[#d4af37] text-black py-4 rounded-full font-semibold hover:opacity-90 transition cursor-pointer"
+									>
+										Checkout
+									</button>
+
+
 								</div>
 						)}
 					</div>
