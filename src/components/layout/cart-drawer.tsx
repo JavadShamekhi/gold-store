@@ -12,7 +12,6 @@ import {
 } from '@/src/components/ui/sheet';
 
 import { ShoppingCart } from 'lucide-react';
-
 import { useCartStore } from '@/src/store/cart-store';
 
 const CartDrawer = () => {
@@ -25,36 +24,55 @@ const CartDrawer = () => {
 
 	return (
 			<Sheet>
+				{/* TRIGGER */}
 				<SheetTrigger asChild>
-					<button className="relative hover:text-[#d4af37] transition cursor-pointer">
+					<button className="relative hover:text-[var(--primary)] transition cursor-pointer">
 						<ShoppingCart size={22} />
 
 						{items.length > 0 && (
-								<span className="absolute -top-2 -right-2 bg-[#d4af37] text-black text-xs w-5 h-5 rounded-full flex items-center justify-center">
-              {items.length}
-            </span>
+								<span className="
+							absolute -top-2 -right-2
+							bg-[var(--primary)]
+							text-black text-xs
+							w-5 h-5 rounded-full
+							flex items-center justify-center
+						">
+							{items.length}
+						</span>
 						)}
 					</button>
 				</SheetTrigger>
 
-				<SheetContent className="bg-[#0a0a0a] border-l border-white/10 text-white w-full sm:max-w-lg">
+				{/* DRAWER */}
+				<SheetContent className="
+				bg-[var(--background)]
+				text-[var(--foreground)]
+				border-l border-[var(--border)]
+				w-full sm:max-w-lg
+			">
 					<SheetHeader>
-						<SheetTitle className="text-white text-2xl">
+						<SheetTitle className="text-2xl text-[var(--foreground)]">
 							Shopping Cart
 						</SheetTitle>
 					</SheetHeader>
 
-					<div className="mt-10 ml-5 mr-5 flex flex-col gap-6">
+					<div className="mt-10 mx-5 flex flex-col gap-6">
+
+						{/* EMPTY */}
 						{items.length === 0 ? (
-								<p className="text-white/60">
+								<p className="text-[var(--foreground)]/60">
 									Your cart is empty.
 								</p>
 						) : (
 								<>
+									{/* ITEMS */}
 									{items.map((item) => (
 											<div
 													key={item.id}
-													className="flex gap-4 border-b border-white/10 pb-5"
+													className="
+										flex gap-4 pb-5
+										border-b border-[var(--border)]
+									"
 											>
 												<div className="relative w-24 h-24 rounded-2xl overflow-hidden">
 													<Image
@@ -66,34 +84,46 @@ const CartDrawer = () => {
 												</div>
 
 												<div className="flex-1">
-													<h3 className="font-semibold">
+													<h3 className="font-semibold text-[var(--foreground)]">
 														{item.title}
 													</h3>
 
-													<p className="text-[#d4af37] mt-2">
+													<p className="text-[var(--primary)] mt-2">
 														${item.price}
 													</p>
 
-													<p className="text-sm text-white/60 mt-1">
+													<p className="text-sm text-[var(--foreground)]/60 mt-1">
 														Qty: {item.quantity}
 													</p>
 												</div>
 											</div>
 									))}
 
-									<div className="flex items-center justify-between mt-6">
-                <span className="text-xl font-semibold">
-                  Total
-                </span>
+									{/* TOTAL */}
+									<div className="
+								flex items-center justify-between mt-6
+								text-[var(--foreground)]
+							">
+								<span className="text-xl font-semibold">
+									Total
+								</span>
 
-										<span className="text-2xl font-bold text-[#d4af37]">
-                  ${totalPrice}
-                </span>
+										<span className="text-2xl font-bold text-[var(--primary)]">
+									${totalPrice}
+								</span>
 									</div>
 
+									{/* CTA */}
 									<Link
 											href="/cart"
-											className="bg-[#d4af37] text-black text-center py-4 rounded-full font-semibold hover:opacity-90 transition"
+											className="
+									bg-[var(--primary)]
+									text-black text-center
+									py-4 rounded-full
+									font-semibold
+									hover:opacity-90
+									transition
+								"
 									>
 										Go To Cart
 									</Link>

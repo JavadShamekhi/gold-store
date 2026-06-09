@@ -52,3 +52,23 @@ h4,
 h5 {
 	font-family: var(--font-playfair);
 }
+
+@keyframes glow {
+	0%, 100% { opacity: 0.6; }
+	50% { opacity: 1; }
+}
+
+.gold-glow {
+	text-shadow: 0 0 10px rgba(212, 175, 55, 0.4);
+}
+
+@keyframes shake {
+	0%, 100% { transform: translateX(0); }
+	25% { transform: translateX(-4px); }
+	50% { transform: translateX(4px); }
+	75% { transform: translateX(-4px); }
+}
+
+.animate-shake {
+	animation: shake 0.3s ease-in-out;
+}
