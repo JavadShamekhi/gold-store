@@ -40,7 +40,7 @@ export default async function ProductDetailsPage({
 						</div>
 
 						<div>
-							<p className="text-[#d4af37] uppercase tracking-[4px]">
+							<p className="text-[var--(primary)] uppercase tracking-[4px]">
 								{product.category}
 							</p>
 
@@ -48,27 +48,27 @@ export default async function ProductDetailsPage({
 								{product.title}
 							</h1>
 
-							<p className="text-white/60 mt-6 text-lg leading-relaxed">
+							<p className="text-[var(--foreground)]/60 mt-6 text-lg leading-relaxed">
 								{product.description}
 							</p>
 
 							<div className="mt-10 space-y-4">
 								<p>
 									Weight:
-									<span className="text-[#d4af37] ml-2">
+									<span className="text-[var(--primary)] ml-2">
                   {product.weight}g
                 </span>
 								</p>
 
 								<p>
 									Stock:
-									<span className="text-[#d4af37] ml-2">
+									<span className="text-[var(--primary)] ml-2">
                   {product.stock}
                 </span>
 								</p>
 							</div>
 
-							<div className="text-4xl font-bold text-[#d4af37] mt-10">
+							<div className="text-4xl font-bold text-[var(--primary)] mt-10">
 								${product.price}
 							</div>
 
@@ -80,7 +80,18 @@ export default async function ProductDetailsPage({
 										image={product.image}
 								/>
 
-								<button className="border border-white/10 px-8 py-4 rounded-full hover:border-[#d4af37] transition">
+								<button
+										className="
+									border border-[var(--border)]
+									bg-[var(--card)]
+									text-[var(--foreground)]
+									px-8 py-4
+									rounded-full
+									hover:border-[var(--primary)]
+									transition
+									cursor-pointer
+								"
+								>
 									Wishlist
 								</button>
 							</div>

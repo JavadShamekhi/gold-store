@@ -48,11 +48,11 @@ export default function ClientProducts({
 				<div className="py-20">
 					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12">
 						<div>
-							<p className="text-[#d4af37] uppercase tracking-[4px] text-sm">
+							<p className="text-[var(--primary)] uppercase tracking-[4px] text-sm">
 								Collection
 							</p>
 
-							<h1 className="text-5xl font-bold mt-3">
+							<h1 className="text-5xl font-bold mt-3 text-[var(--foreground)]">
 								All Products
 							</h1>
 						</div>
@@ -64,8 +64,8 @@ export default function ClientProducts({
 									onChange={(e) =>
 											setSearch(e.target.value)
 									}
-									placeholder="Search jewelry..."
-									className="bg-[#111111] border border-white/10 rounded-full px-5 py-3 outline-none focus:border-[#d4af37]"
+									placeholder="Search jewelery..."
+									className="bg-[var(--card)]	text-[var(--card-foreground)]	border border-[var(--border)] rounded-full px-5 py-3 outline-none	transition focus:border-[var(--primary)]"
 							/>
 
 							<select
@@ -73,7 +73,7 @@ export default function ClientProducts({
 									onChange={(e) =>
 											setCategory(e.target.value)
 									}
-									className="bg-[#111111] border border-white/10 rounded-full px-5 py-3 outline-none focus:border-[#d4af37]"
+									className="bg-[var(--card)] text-[var(--card-foreground)]	border border-[var(--border)]	rounded-full px-5 py-3 outline-none transition focus:border-[var(--primary)]	cursor-pointer"
 							>
 								{categories.map((item) => (
 										<option
@@ -89,7 +89,7 @@ export default function ClientProducts({
 
 					{filteredProducts.length === 0 ? (
 							<div className="h-[40vh] flex items-center justify-center">
-								<p className="text-white/50 text-xl">
+								<p className="text-[var(--foreground)]/50 text-xl">
 									No products found.
 								</p>
 							</div>

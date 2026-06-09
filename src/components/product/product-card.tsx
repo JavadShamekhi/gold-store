@@ -16,7 +16,7 @@ const ProductCard = ({ product }: Props) => {
 
 	return (
 			<Link href={`/products/${product.id}`}>
-				<div className="group bg-[#111111] rounded-3xl overflow-hidden border border-white/10 hover:border-[#d4af37]/40 transition duration-300">
+				<div className="group bg-[var(--card)] text-[var(--card-foreground)] rounded-3xl overflow-hidden border border-[var(--border)] hover:border-[var(--primary)]/40 transition duration-300">
 					<div className="relative h-[320px] overflow-hidden">
 						<Image
 								src={product.image}
@@ -29,11 +29,11 @@ const ProductCard = ({ product }: Props) => {
 
 					<div className="p-5">
 						<div className="flex items-center justify-between">
-            <span className="text-xs text-[#d4af37] uppercase tracking-widest">
+            <span className="text-xs text-[var(--primary)] uppercase tracking-widest">
               {product.category}
             </span>
 
-							<span className="text-sm text-white/60">
+							<span className="text-sm text-[var(--foreground)]/60">
               {product.weight}
             </span>
 						</div>
@@ -43,7 +43,7 @@ const ProductCard = ({ product }: Props) => {
 						</h3>
 
 						<div className="mt-5 flex items-center justify-between">
-            <span className="text-xl font-bold text-[#d4af37]">
+            <span className="text-xl font-bold text-[var(--primary)]">
               ${product.price}
             </span>
 
@@ -61,7 +61,7 @@ const ProductCard = ({ product }: Props) => {
 
 										toast.success('Product added to cart');
 									}}
-									className="bg-[#d4af37] text-black px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition cursor-pointer"
+									className="bg-[var(--primary)] text-[var(--primary-foreground)] px-4 py-2 rounded-full text-sm font-medium hover:opacity-90 transition cursor-pointer"
 							>
 								Add to Cart
 							</button>

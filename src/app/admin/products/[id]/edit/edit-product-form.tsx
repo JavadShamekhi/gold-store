@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 type Product = {
-	id: number;
+	id: string;
 	title: string;
 	description: string;
 	category: string;

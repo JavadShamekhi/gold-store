@@ -1,11 +1,12 @@
 'use client';
 
-import { toast } from "sonner";
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { toast } from 'sonner';
+
 import {
 	Form,
 	FormControl,
@@ -14,13 +15,13 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/src/components/ui/form';
+
 import { Input } from '@/src/components/ui/input';
 import { Button } from '@/src/components/ui/button';
-import {error} from "effect/Brand";
 
 const schema = z.object({
 	email: z.string().email('Invalid email'),
-	password: z.string().min(6, 'Password must be at least 6 characters'),
+	password: z.string().min(6, 'Min 6 characters'),
 });
 
 type FormValues = z.infer<typeof schema>;
@@ -28,6 +29,8 @@ type FormValues = z.infer<typeof schema>;
 export default function LoginPage() {
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
+	const [errorShake, setErrorShake] = useState(false);
+
 	const form = useForm<FormValues>({
 		resolver: zodResolver(schema),
 		defaultValues: {
@@ -36,31 +39,36 @@ export default function LoginPage() {
 		},
 	});
 
+	useEffect(() => {
+		form.setFocus('email');
+	}, []);
+
 	const onSubmit = async (values: FormValues) => {
 		try {
 			setLoading(true);
 
 			const res = await fetch('/api/auth/login', {
 				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-				},
+				headers: { 'Content-Type': 'application/json' },
 				body: JSON.stringify(values),
 			});
 
+			const data = await res.json();
+
 			if (!res.ok) {
-				throw new Error('Login failed');
+				throw new Error(data.message || 'Login failed');
 			}
 
-			toast.success('Welcome back!');
+			toast.success('Welcome back, Admin');
 
 			router.push('/admin/products');
 			router.refresh();
 		} catch (err) {
+			setErrorShake(true);
+			setTimeout(() => setErrorShake(false), 500);
+
 			toast.error(
-					error instanceof Error
-						? error.message
-							: 'Login failed'
+					err instanceof Error ? err.message : 'Login failed'
 			);
 		} finally {
 			setLoading(false);
@@ -68,15 +76,36 @@ export default function LoginPage() {
 	};
 
 	return (
-			<div className="min-h-screen flex items-center justify-center bg-black text-white">
-				<div className="w-full max-w-md p-8 rounded-2xl border border-white/10 bg-[#0a0a0a] shadow-xl">
+			<div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
 
-					<h1 className="text-3xl font-bold text-center text-[#d4af37] mb-2">
-						ZARRIN Admin
+				{/* BACKGROUND GRID */}
+				<div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,var(--primary)_1px,transparent_0)] [background-size:24px_24px]" />
+
+				{/* GOLD GLOW ORBS */}
+				<div className="absolute w-[500px] h-[500px] bg-[var(--primary)] opacity-10 blur-[120px] top-[-100px] left-[-100px]" />
+				<div className="absolute w-[500px] h-[500px] bg-blue-500 opacity-10 blur-[120px] bottom-[-150px] right-[-150px]" />
+
+				{/* CARD */}
+				<div
+						className={`
+					w-full max-w-md z-10
+					p-8 rounded-3xl
+					border border-[var(--border)]
+					bg-[var(--card)]
+					backdrop-blur-xl
+					shadow-[0_0_60px_rgba(212,175,55,0.08)]
+					transition
+					${errorShake ? 'animate-shake' : ''}
+				`}
+				>
+
+					{/* TITLE */}
+					<h1 className="text-4xl font-bold text-center text-[var(--primary)] tracking-wide">
+						ZARRIN
 					</h1>
 
-					<p className="text-center text-white/60 mb-8">
-						Sign in to your dashboard
+					<p className="text-center text-[var(--foreground)]/60 mt-2 mb-8">
+						Admin Access Portal
 					</p>
 
 					<Form {...form}>
@@ -91,9 +120,14 @@ export default function LoginPage() {
 												<FormLabel>Email</FormLabel>
 												<FormControl>
 													<Input
-															placeholder="admin@example.com"
 															{...field}
-															className="bg-black border-white/10 focus:border-[#d4af37]"
+															placeholder="admin@zarrin.com"
+															className="
+												bg-[var(--background)]
+												border-[var(--border)]
+												focus:border-[var(--primary)]
+												transition
+											"
 													/>
 												</FormControl>
 												<FormMessage />
@@ -111,9 +145,14 @@ export default function LoginPage() {
 												<FormControl>
 													<Input
 															type="password"
-															placeholder="••••••••"
 															{...field}
-															className="bg-black border-white/1 focus:border-[#d4af37]"
+															placeholder="••••••••"
+															className="
+												bg-[var(--background)]
+												border-[var(--border)]
+												focus:border-[var(--primary)]
+												transition
+											"
 													/>
 												</FormControl>
 												<FormMessage />
@@ -125,9 +164,18 @@ export default function LoginPage() {
 							<Button
 									type="submit"
 									disabled={loading}
-									className="w-full bg-[#d4af37] text-black hover:opacity-90"
+									className="
+								w-full h-12
+								bg-[var(--primary)]
+								text-black font-semibold
+								rounded-xl
+								hover:scale-[1.02]
+								transition
+								active:scale-[0.98]
+								cursor-pointer
+							"
 							>
-								{loading ? 'Signing in...' : 'Login'}
+								{loading ? 'Authenticating...' : 'Enter Dashboard'}
 							</Button>
 
 						</form>
