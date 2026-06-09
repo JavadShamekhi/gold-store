@@ -1,97 +1,138 @@
 'use client';
 
+import { toast } from "sonner";
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
-	loginSchema,
-	LoginFormValues,
-} from '@/src/features/auth/schemas/login-schema';
-import { useAuthStore } from '@/src/store/auth-store';
-import Navbar from '@/src/components/layout/navbar';
-import Container from '@/src/components/layout/container';
-import { toast } from 'sonner';
+	Form,
+	FormControl,
+	FormField,
+	FormItem,
+	FormLabel,
+	FormMessage,
+} from '@/src/components/ui/form';
+import { Input } from '@/src/components/ui/input';
+import { Button } from '@/src/components/ui/button';
+import {error} from "effect/Brand";
+
+const schema = z.object({
+	email: z.string().email('Invalid email'),
+	password: z.string().min(6, 'Password must be at least 6 characters'),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 export default function LoginPage() {
 	const router = useRouter();
-
-	const login = useAuthStore(
-			(state) => state.login
-	);
-
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-	} = useForm<LoginFormValues>({
-		resolver: zodResolver(loginSchema),
+	const [loading, setLoading] = useState(false);
+	const form = useForm<FormValues>({
+		resolver: zodResolver(schema),
+		defaultValues: {
+			email: '',
+			password: '',
+		},
 	});
 
-	const onSubmit = (
-			values: LoginFormValues
-	) => {
-		login({
-			id: 1,
-			email: values.email,
-		});
+	const onSubmit = async (values: FormValues) => {
+		try {
+			setLoading(true);
 
-		toast.success('Logged in successfully');
+			const res = await fetch('/api/auth/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(values),
+			});
 
-		router.push('/');
+			if (!res.ok) {
+				throw new Error('Login failed');
+			}
+
+			toast.success('Welcome back!');
+
+			router.push('/admin/products');
+			router.refresh();
+		} catch (err) {
+			toast.error(
+					error instanceof Error
+						? error.message
+							: 'Login failed'
+			);
+		} finally {
+			setLoading(false);
+		}
 	};
 
 	return (
-			<main>
-				<Navbar />
+			<div className="min-h-screen flex items-center justify-center bg-black text-white">
+				<div className="w-full max-w-md p-8 rounded-2xl border border-white/10 bg-[#0a0a0a] shadow-xl">
 
-				<Container>
-					<div className="max-w-md mx-auto py-24">
-						<h1 className="text-5xl font-bold mb-10">
-							Login
-						</h1>
+					<h1 className="text-3xl font-bold text-center text-[#d4af37] mb-2">
+						ZARRIN Admin
+					</h1>
 
-						<form
-								onSubmit={handleSubmit(onSubmit)}
-								className="space-y-6"
-						>
-							<div>
-								<input
-										{...register('email')}
-										placeholder="Email"
-										className="w-full bg-[#111111] border border-white/10 rounded-xl px-4 py-4"
-								/>
+					<p className="text-center text-white/60 mb-8">
+						Sign in to your dashboard
+					</p>
 
-								{errors.email && (
-										<p className="text-red-400 mt-2">
-											{errors.email.message}
-										</p>
-								)}
-							</div>
+					<Form {...form}>
+						<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5">
 
-							<div>
-								<input
-										type="password"
-										{...register('password')}
-										placeholder="Password"
-										className="w-full bg-[#111111] border border-white/10 rounded-xl px-4 py-4"
-								/>
+							{/* EMAIL */}
+							<FormField
+									control={form.control}
+									name="email"
+									render={({ field }) => (
+											<FormItem>
+												<FormLabel>Email</FormLabel>
+												<FormControl>
+													<Input
+															placeholder="admin@example.com"
+															{...field}
+															className="bg-black border-white/10 focus:border-[#d4af37]"
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+									)}
+							/>
 
-								{errors.password && (
-										<p className="text-red-400 mt-2">
-											{errors.password.message}
-										</p>
-								)}
-							</div>
+							{/* PASSWORD */}
+							<FormField
+									control={form.control}
+									name="password"
+									render={({ field }) => (
+											<FormItem>
+												<FormLabel>Password</FormLabel>
+												<FormControl>
+													<Input
+															type="password"
+															placeholder="••••••••"
+															{...field}
+															className="bg-black border-white/1 focus:border-[#d4af37]"
+													/>
+												</FormControl>
+												<FormMessage />
+											</FormItem>
+									)}
+							/>
 
-							<button
+							{/* BUTTON */}
+							<Button
 									type="submit"
-									className="w-full bg-[#d4af37] text-black py-4 rounded-xl font-semibold cursor-pointer"
+									disabled={loading}
+									className="w-full bg-[#d4af37] text-black hover:opacity-90"
 							>
-								Login
-							</button>
+								{loading ? 'Signing in...' : 'Login'}
+							</Button>
+
 						</form>
-					</div>
-				</Container>
-			</main>
+					</Form>
+				</div>
+			</div>
 	);
 }
