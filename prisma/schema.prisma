@@ -19,7 +19,7 @@ enum OrderStatus {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        String      @id @default(uuid())
   email     String   @unique
   password  String
   role      Role     @default(CUSTOMER)
@@ -29,7 +29,7 @@ model User {
 }
 
 model Product {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(uuid())
   title       String
   description String
   price       Float
@@ -43,10 +43,10 @@ model Product {
 }
 
 model Order {
-  id          Int         @id @default(autoincrement())
+  id          String         @id @default(uuid())
   totalPrice  Float
   status      OrderStatus @default(PENDING)
-  userId      Int
+  userId      String
   user        User        @relation(fields: [userId], references: [id])
   items       OrderItem[]
   createdAt   DateTime @default(now())
@@ -54,11 +54,11 @@ model Order {
 }
 
 model OrderItem {
-  id         Int @id @default(autoincrement())
+  id         String @id @default(uuid())
   quantity   Int
   price      Float
-  orderId    Int
+  orderId    String
   order      Order @relation(fields: [orderId], references: [id])
-  productId  Int
+  productId  String
   product    Product @relation(fields: [productId], references: [id])
 }
