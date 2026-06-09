@@ -24,7 +24,15 @@ export default async function AdminProductsPage() {
 
 							<Link
 									href="/admin/products/new"
-									className="bg-[#d4af37] text-black px-6 py-3 rounded-full"
+									className="
+								bg-[var(--primary)]
+								text-[var(--primary-foreground)]
+								px-6 py-3
+								rounded-full
+								font-medium
+								hover:opacity-90
+								transition
+							"
 							>
 								Add Product
 							</Link>
@@ -34,14 +42,14 @@ export default async function AdminProductsPage() {
 							{products.map((product) => (
 									<div
 											key={product.id}
-											className="flex items-center justify-between border border-white/10 p-4 rounded-xl"
+											className="flex items-center justify-between bg-[var(--card)] border border-[var(--border)] p-5 rounded-2xl"
 									>
 										<div>
-											<h2 className="font-semibold">
+											<h2 className="font-semibold text-lg">
 												{product.title}
 											</h2>
 
-											<p className="text-white/60 text-sm">
+											<p className="text-[var(--foreground)]/60 text-sm mt-1">
 												${product.price} • {product.category}
 											</p>
 										</div>
@@ -49,7 +57,7 @@ export default async function AdminProductsPage() {
 										<div className="flex gap-3">
 											<Link
 													href={`/admin/products/${product.id}/edit`}
-													className="px-4 py-2 border border-white/10 rounded-full hover:border-[#d4af37]"
+													className=" px-4 py-2 border border-[var(--border)] bg-[var(--background)] rounded-full hover:border-[var(--primary)] transition"
 											>
 												Edit
 											</Link>
