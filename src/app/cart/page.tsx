@@ -60,7 +60,7 @@ export default function CartPage() {
 	};
 
 	return (
-			<main>
+			<main className="bg-[var(--background)] text-[var(--foreground)]">
 				<Navbar />
 
 				<Container>
@@ -70,7 +70,7 @@ export default function CartPage() {
 						</h1>
 
 						{items.length === 0 ? (
-								<p className="text-white/60">
+								<p className="text-[var(--foreground)]/60">
 									Your cart is empty.
 								</p>
 						) : (
@@ -78,7 +78,7 @@ export default function CartPage() {
 									{items.map((item) => (
 											<div
 													key={item.id}
-													className="flex flex-col md:flex-row gap-6 items-center justify-between bg-[#111111] border border-white/10 rounded-3xl p-5"
+													className="flex flex-col md:flex-row gap-6 items-center justify-between bg-[var(--card)] border border-[var(--border)] rounded-3xl p-5 transition hover:border-[var(--primary)]/40"
 											>
 												<div className="flex items-center gap-5">
 													<div className="relative w-28 h-28 rounded-2xl overflow-hidden">
@@ -95,7 +95,7 @@ export default function CartPage() {
 															{item.title}
 														</h2>
 
-														<p className="text-[#d4af37] mt-2">
+														<p className="text-[var(--primary)] mt-2">
 															${item.price}
 														</p>
 													</div>
@@ -106,7 +106,7 @@ export default function CartPage() {
 															onClick={() =>
 																	decreaseQuantity(item.id)
 															}
-															className="w-10 h-10 rounded-full border border-white/10 cursor-pointer"
+															className="w-10 h-10 rounded-full border border-[var(--border)] hover:border-[var(--primary)] transition cursor-pointer"
 													>
 														-
 													</button>
@@ -119,7 +119,7 @@ export default function CartPage() {
 															onClick={() =>
 																	increaseQuantity(item.id)
 															}
-															className="w-10 h-10 rounded-full border border-white/10 cursor-pointer"
+															className="w-10 h-10 rounded-full border border-[var(--border)] hover:border-[var(--primary)] transition cursor-pointer"
 													>
 														+
 													</button>
@@ -129,7 +129,7 @@ export default function CartPage() {
 														onClick={() =>
 																removeItem(item.id)
 														}
-														className="text-red-400 cursor-pointer"
+														className="text-red-400 hover:text-red-500 transition cursor-pointer"
 												>
 													Remove
 												</button>
@@ -141,14 +141,14 @@ export default function CartPage() {
 											Total:
 										</h2>
 
-										<p className="text-4xl font-bold text-[#d4af37]">
+										<p className="text-4xl font-bold text-[var(--primary)]">
 											${totalPrice}
 										</p>
 									</div>
 
 									<button
 										onClick={handleCheckout}
-										className="w-full mt-8 bg-[#d4af37] text-black py-4 rounded-full font-semibold hover:opacity-90 transition cursor-pointer"
+										className="w-full mt-8 bg-[var(--primary)] text-[var(--primary-foreground)] py-4 rounded-full font-semibold hover:opacity-90 transition cursor-pointer"
 									>
 										Checkout
 									</button>

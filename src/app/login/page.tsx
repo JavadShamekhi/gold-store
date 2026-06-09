@@ -68,8 +68,8 @@ export default function LoginPage() {
 	};
 
 	return (
-			<div className="min-h-screen flex items-center justify-center bg-black text-white">
-				<div className="w-full max-w-md p-8 rounded-2xl border border-white/10 bg-[#0a0a0a] shadow-xl">
+			<div className="min-h-screen flex items-center justify-center bg-background text-foreground">
+				<div className="w-full max-w-md p-8 rounded-2xl border border-border bg-[#0a0a0a] shadow-xl">
 
 					<h1 className="text-3xl font-bold text-center text-[#d4af37] mb-2">
 						ZARRIN Admin
@@ -93,7 +93,7 @@ export default function LoginPage() {
 													<Input
 															placeholder="admin@example.com"
 															{...field}
-															className="bg-black border-white/10 focus:border-[#d4af37]"
+															className="bg-background border-border focus:border-[#d4af37]"
 													/>
 												</FormControl>
 												<FormMessage />
@@ -113,7 +113,7 @@ export default function LoginPage() {
 															type="password"
 															placeholder="••••••••"
 															{...field}
-															className="bg-black border-white/1 focus:border-[#d4af37]"
+															className="bg-background border-border focus:border-[#d4af37]"
 													/>
 												</FormControl>
 												<FormMessage />

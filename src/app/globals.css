@@ -1,6 +1,26 @@
 @import "tailwindcss";
 
 :root {
+	/* LIGHT MODE */
+
+	--background: #ffffff;
+	--foreground: #111111;
+
+	--card: #f8f8f8;
+	--card-foreground: #111111;
+
+	--primary: #d4af37;
+	--primary-foreground: #000000;
+
+	--secondary: #f1f1f1;
+	--secondary-foreground: #111111;
+
+	--border: #e5e5e5;
+}
+
+.dark {
+	/* DARK MODE */
+
 	--background: #0a0a0a;
 	--foreground: #ffffff;
 
@@ -20,6 +40,9 @@ body {
 	background: var(--background);
 	color: var(--foreground);
 	font-family: var(--font-inter);
+	transition:
+					background-color 0.3s ease,
+					color 0.3s ease;
 }
 
 h1,

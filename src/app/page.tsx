@@ -9,21 +9,21 @@ export default async function Home() {
 	const products = await prisma.product.findMany();
 
 	return (
-			<main>
+			<main className="bg-[var(--background)] text-[var(--foreground)]">
 				<Navbar />
 
 				<section className="h-[90vh] flex items-center justify-center">
 					<div className="text-center px-4">
-						<h1 className="text-6xl md:text-8xl font-bold text-[#d4af37]">
-							Luxury Jewelry
+						<h1 className="text-6xl md:text-8xl font-bold text-[var(--primary)]">
+							Luxury Jewelery
 						</h1>
 
-						<p className="mt-6 text-white/70 max-w-2xl mx-auto">
+						<p className="mt-6 text-[var(--foreground)]/70 max-w-2xl mx-auto">
 							Discover timeless elegance and premium handcrafted
 							jewelry designed for modern luxury.
 						</p>
 
-						<button className="mt-8 bg-[#d4af37] text-black px-8 py-3 rounded-full font-medium hover:opacity-90 transition cursor-pointer">
+						<button className="mt-8 bg-[var(--primary)] text-[var(--primary-foreground)] px-8 py-3 rounded-full font-medium hover:opacity-90 transition cursor-pointer">
 							Explore Collection
 						</button>
 					</div>
@@ -33,7 +33,7 @@ export default async function Home() {
 					<Container>
 						<div className="flex items-center justify-between mb-10">
 							<div>
-								<p className="text-[#d4af37] uppercase tracking-[4px] text-sm">
+								<p className="text-[var(--primary)] uppercase tracking-[4px] text-sm">
 									Collection
 								</p>
 
