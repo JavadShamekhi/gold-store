@@ -2,15 +2,13 @@ import {create} from "zustand";
 import {persist} from "zustand/middleware";
 
 type User = {
-	id: number;
+	id: string;
 	email: string;
 };
 
 type AuthStore = {
 	user: User | null;
-
 	login: (user: User) => void;
-
 	logout: () => void;
 };
 

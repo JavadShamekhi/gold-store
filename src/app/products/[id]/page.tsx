@@ -17,7 +17,7 @@ export default async function ProductDetailsPage({
 	const { id } = await params;
 
 	const product = await getProductById(
-			Number(id)
+			id
 	);
 
 	if (!product) {

@@ -1,4 +1,5 @@
-import {PrismaClient} from "@prisma/client";
+import {PrismaClient, Role} from "@prisma/client";
+import bcrypt from "bcryptjs";
 
 const prisma = new PrismaClient();
 
@@ -45,14 +46,32 @@ async function main() {
 			},
 		]
 	});
+
+	const adminEmail = 'admin@goldstore.com';
+	const existingAdmin = await prisma.user.findUnique({
+		where: { email: adminEmail },
+	});
+	if (!existingAdmin) {
+		const hashedPassword = await bcrypt.hash('123456', 10);
+
+		await prisma.user.create({
+			data: {
+				email: adminEmail,
+				password: hashedPassword,
+				role: Role.ADMIN,
+			},
+		});
+		console.log("Admin user created");
+	}
+
+	console.log("Seed completed");
 }
 
 main()
-		.then(async () => {
-			await prisma.$disconnect();
-		})
-		.catch(async (e) => {
+		.catch((e) => {
 			console.error(e);
-			await prisma.$disconnect();
 			process.exit(1);
+		})
+		.finally(async () => {
+			await prisma.$disconnect();
 		});
