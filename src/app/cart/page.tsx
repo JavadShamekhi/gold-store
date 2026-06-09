@@ -1,11 +1,11 @@
 'use client';
 
 import Image from 'next/image';
-import { useRouter } from "next/navigation";
-import { toast } from "sonner";
+import {useRouter} from "next/navigation";
+import {toast} from "sonner";
 import Navbar from '@/src/components/layout/navbar';
 import Container from '@/src/components/layout/container';
-import { useCartStore } from '@/src/store/cart-store';
+import {useCartStore} from '@/src/store/cart-store';
 
 export default function CartPage() {
 	const {
@@ -13,7 +13,7 @@ export default function CartPage() {
 		removeItem,
 		increaseQuantity,
 		decreaseQuantity,
-			clearCart
+		clearCart
 	} = useCartStore();
 
 	const router = useRouter();
@@ -53,7 +53,7 @@ export default function CartPage() {
 		} catch (error) {
 			toast.error(
 					error instanceof Error
-						? error.message
+							? error.message
 							: 'Checkout failed'
 			);
 		}
@@ -61,7 +61,7 @@ export default function CartPage() {
 
 	return (
 			<main className="bg-[var(--background)] text-[var(--foreground)]">
-				<Navbar />
+				<Navbar/>
 
 				<Container>
 					<div className="py-20">
@@ -147,8 +147,8 @@ export default function CartPage() {
 									</div>
 
 									<button
-										onClick={handleCheckout}
-										className="w-full mt-8 bg-[var(--primary)] text-[var(--primary-foreground)] py-4 rounded-full font-semibold hover:opacity-90 transition cursor-pointer"
+											onClick={handleCheckout}
+											className="w-full mt-8 bg-[var(--primary)] text-[var(--primary-foreground)] py-4 rounded-full font-semibold hover:opacity-90 transition cursor-pointer"
 									>
 										Checkout
 									</button>

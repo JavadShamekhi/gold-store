@@ -6,10 +6,10 @@ export default async function ProductsPage() {
 	const products = await getProducts();
 
 	return (
-		<>
-			<Navbar />
+			<>
+				<Navbar/>
 
-			<ClientProducts products={products} />
-		</>
+				<ClientProducts products={products}/>
+			</>
 	);
 }

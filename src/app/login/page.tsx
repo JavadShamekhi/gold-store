@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
+import {useState, useEffect} from 'react';
+import {useRouter} from 'next/navigation';
+import {z} from 'zod';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
+import {toast} from 'sonner';
 
 import {
 	Form,
@@ -16,8 +16,8 @@ import {
 	FormMessage,
 } from '@/src/components/ui/form';
 
-import { Input } from '@/src/components/ui/input';
-import { Button } from '@/src/components/ui/button';
+import {Input} from '@/src/components/ui/input';
+import {Button} from '@/src/components/ui/button';
 
 const schema = z.object({
 	email: z.string().email('Invalid email'),
@@ -49,7 +49,7 @@ export default function LoginPage() {
 
 			const res = await fetch('/api/auth/login', {
 				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
+				headers: {'Content-Type': 'application/json'},
 				body: JSON.stringify(values),
 			});
 
@@ -76,14 +76,18 @@ export default function LoginPage() {
 	};
 
 	return (
-			<div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
+			<div
+					className="relative min-h-screen flex items-center justify-center overflow-hidden bg-[var(--background)] text-[var(--foreground)]">
 
 				{/* BACKGROUND GRID */}
-				<div className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,var(--primary)_1px,transparent_0)] [background-size:24px_24px]" />
+				<div
+						className="absolute inset-0 opacity-[0.05] bg-[radial-gradient(circle_at_1px_1px,var(--primary)_1px,transparent_0)] [background-size:24px_24px]"/>
 
 				{/* GOLD GLOW ORBS */}
-				<div className="absolute w-[500px] h-[500px] bg-[var(--primary)] opacity-10 blur-[120px] top-[-100px] left-[-100px]" />
-				<div className="absolute w-[500px] h-[500px] bg-blue-500 opacity-10 blur-[120px] bottom-[-150px] right-[-150px]" />
+				<div
+						className="absolute w-[500px] h-[500px] bg-[var(--primary)] opacity-10 blur-[120px] top-[-100px] left-[-100px]"/>
+				<div
+						className="absolute w-[500px] h-[500px] bg-blue-500 opacity-10 blur-[120px] bottom-[-150px] right-[-150px]"/>
 
 				{/* CARD */}
 				<div
@@ -115,7 +119,7 @@ export default function LoginPage() {
 							<FormField
 									control={form.control}
 									name="email"
-									render={({ field }) => (
+									render={({field}) => (
 											<FormItem>
 												<FormLabel>Email</FormLabel>
 												<FormControl>
@@ -130,7 +134,7 @@ export default function LoginPage() {
 											"
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage/>
 											</FormItem>
 									)}
 							/>
@@ -139,7 +143,7 @@ export default function LoginPage() {
 							<FormField
 									control={form.control}
 									name="password"
-									render={({ field }) => (
+									render={({field}) => (
 											<FormItem>
 												<FormLabel>Password</FormLabel>
 												<FormControl>
@@ -155,7 +159,7 @@ export default function LoginPage() {
 											"
 													/>
 												</FormControl>
-												<FormMessage />
+												<FormMessage/>
 											</FormItem>
 									)}
 							/>

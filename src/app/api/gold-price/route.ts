@@ -2,7 +2,7 @@ export async function GET() {
 	try {
 		const res = await fetch(
 				'https://api.brsapi.ir/Market/Gold_Currency.php?key=BQ5cI32ZWyudV73G3A1fTZxKmgV7X4K4',
-				{ cache: 'no-store' }
+				{cache: 'no-store'}
 		);
 
 		const data = await res.json();
@@ -14,8 +14,8 @@ export async function GET() {
 
 		if (!gold18k) {
 			return Response.json(
-					{ error: 'Gold data not found' },
-					{ status: 404 }
+					{error: 'Gold data not found'},
+					{status: 404}
 			);
 		}
 
@@ -27,8 +27,8 @@ export async function GET() {
 		});
 	} catch (error) {
 		return Response.json(
-				{ error: 'Failed to fetch gold price' },
-				{ status: 500 }
+				{error: 'Failed to fetch gold price'},
+				{status: 500}
 		);
 	}
 }

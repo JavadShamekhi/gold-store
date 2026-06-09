@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Navbar from '@/src/components/layout/navbar';
 import Container from '@/src/components/layout/container';
-import { prisma } from '@/src/lib/prisma';
+import {prisma} from '@/src/lib/prisma';
 import DeleteButton from "@/src/components/admin/delete-button";
 
 export default async function AdminProductsPage() {
@@ -13,7 +13,7 @@ export default async function AdminProductsPage() {
 
 	return (
 			<>
-				<Navbar />
+				<Navbar/>
 
 				<Container>
 					<div className="py-20">
@@ -62,7 +62,7 @@ export default async function AdminProductsPage() {
 												Edit
 											</Link>
 
-											<DeleteButton id={product.id} />
+											<DeleteButton id={product.id}/>
 										</div>
 									</div>
 							))}

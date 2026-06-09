@@ -1,7 +1,7 @@
-import { notFound } from 'next/navigation';
+import {notFound} from 'next/navigation';
 import Navbar from '@/src/components/layout/navbar';
 import Container from '@/src/components/layout/container';
-import { prisma } from '@/src/lib/prisma';
+import {prisma} from '@/src/lib/prisma';
 import EditProductForm from './edit-product-form';
 
 type Props = {
@@ -13,7 +13,7 @@ type Props = {
 export default async function EditProductPage({
 	                                              params,
                                               }: Props) {
-	const { id } = await params;
+	const {id} = await params;
 
 	const product = await prisma.product.findUnique({
 		where: {
@@ -27,7 +27,7 @@ export default async function EditProductPage({
 
 	return (
 			<>
-				<Navbar />
+				<Navbar/>
 
 				<Container>
 					<div className="py-20">
@@ -35,7 +35,7 @@ export default async function EditProductPage({
 							Edit Product
 						</h1>
 
-						<EditProductForm product={product} />
+						<EditProductForm product={product}/>
 					</div>
 				</Container>
 			</>

@@ -1,15 +1,15 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
+import {useRouter} from 'next/navigation';
+import {useForm} from 'react-hook-form';
+import {zodResolver} from '@hookform/resolvers/zod';
 import {
 	productSchema,
 	type ProductFormValues,
 } from '@/src/lib/validations/product-schema';
-import { Button } from '@/src/components/ui/button';
-import { Input } from '@/src/components/ui/input';
-import { Textarea } from '@/src/components/ui/textarea';
+import {Button} from '@/src/components/ui/button';
+import {Input} from '@/src/components/ui/input';
+import {Textarea} from '@/src/components/ui/textarea';
 import {
 	Form,
 	FormControl,
@@ -70,7 +70,7 @@ export default function ProductForm() {
 						<FormField
 								control={form.control}
 								name="title"
-								render={({ field }) => (
+								render={({field}) => (
 										<FormItem>
 											<FormLabel>Title</FormLabel>
 
@@ -81,7 +81,7 @@ export default function ProductForm() {
 												/>
 											</FormControl>
 
-											<FormMessage />
+											<FormMessage/>
 										</FormItem>
 								)}
 						/>
@@ -89,7 +89,7 @@ export default function ProductForm() {
 						<FormField
 								control={form.control}
 								name="description"
-								render={({ field }) => (
+								render={({field}) => (
 										<FormItem>
 											<FormLabel>Description</FormLabel>
 
@@ -101,7 +101,7 @@ export default function ProductForm() {
 												/>
 											</FormControl>
 
-											<FormMessage />
+											<FormMessage/>
 										</FormItem>
 								)}
 						/>
@@ -109,7 +109,7 @@ export default function ProductForm() {
 						<FormField
 								control={form.control}
 								name="category"
-								render={({ field }) => (
+								render={({field}) => (
 										<FormItem>
 											<FormLabel>Category</FormLabel>
 
@@ -120,7 +120,7 @@ export default function ProductForm() {
 												/>
 											</FormControl>
 
-											<FormMessage />
+											<FormMessage/>
 										</FormItem>
 								)}
 						/>
@@ -128,7 +128,7 @@ export default function ProductForm() {
 						<FormField
 								control={form.control}
 								name="image"
-								render={({ field }) => (
+								render={({field}) => (
 										<FormItem>
 											<FormLabel>Image URL</FormLabel>
 
@@ -139,7 +139,7 @@ export default function ProductForm() {
 												/>
 											</FormControl>
 
-											<FormMessage />
+											<FormMessage/>
 										</FormItem>
 								)}
 						/>
@@ -148,7 +148,7 @@ export default function ProductForm() {
 							<FormField
 									control={form.control}
 									name="price"
-									render={({ field }) => (
+									render={({field}) => (
 											<FormItem>
 												<FormLabel>Price</FormLabel>
 
@@ -159,7 +159,7 @@ export default function ProductForm() {
 													/>
 												</FormControl>
 
-												<FormMessage />
+												<FormMessage/>
 											</FormItem>
 									)}
 							/>
@@ -167,7 +167,7 @@ export default function ProductForm() {
 							<FormField
 									control={form.control}
 									name="weight"
-									render={({ field }) => (
+									render={({field}) => (
 											<FormItem>
 												<FormLabel>Weight (g)</FormLabel>
 
@@ -178,7 +178,7 @@ export default function ProductForm() {
 													/>
 												</FormControl>
 
-												<FormMessage />
+												<FormMessage/>
 											</FormItem>
 									)}
 							/>
@@ -186,7 +186,7 @@ export default function ProductForm() {
 							<FormField
 									control={form.control}
 									name="stock"
-									render={({ field }) => (
+									render={({field}) => (
 											<FormItem>
 												<FormLabel>Stock</FormLabel>
 
@@ -197,7 +197,7 @@ export default function ProductForm() {
 													/>
 												</FormControl>
 
-												<FormMessage />
+												<FormMessage/>
 											</FormItem>
 									)}
 							/>

@@ -1,8 +1,8 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import {useMemo, useState} from 'react';
 
-import type { Product } from '@prisma/client';
+import type {Product} from '@prisma/client';
 
 import Container from '@/src/components/layout/container';
 import ProductCard from '@/src/components/product/product-card';

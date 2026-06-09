@@ -6,23 +6,23 @@ import jwt from 'jsonwebtoken';
 export async function POST(req: Request) {
 	try {
 		const body = await req.json();
-		const { email, password } = body;
+		const {email, password} = body;
 
 		if (!email || !password) {
 			return NextResponse.json(
-					{ message: 'Missing fields' },
-					{ status: 400 }
+					{message: 'Missing fields'},
+					{status: 400}
 			);
 		}
 
 		const user = await prisma.user.findUnique({
-			where: { email },
+			where: {email},
 		});
 
 		if (!user) {
 			return NextResponse.json(
-					{ message: 'User not found' },
-					{ status: 404 },
+					{message: 'User not found'},
+					{status: 404},
 			);
 		}
 
@@ -33,23 +33,23 @@ export async function POST(req: Request) {
 
 		if (!isValid) {
 			return NextResponse.json(
-					{ message: 'Invalid credentials' },
-					{ status: 401 }
+					{message: 'Invalid credentials'},
+					{status: 401}
 			);
 		}
 
 		const token = jwt.sign({
-			userId: user.id,
-			email: user.email,
-			role: user.role,
-		},
+					userId: user.id,
+					email: user.email,
+					role: user.role,
+				},
 				process.env.JWT_SECRET!,
-				{ expiresIn: '7d' }
+				{expiresIn: '7d'}
 		);
 
 		const response = NextResponse.json({
 			message: 'Login successful', token: token,
-		}, { status: 200, });
+		}, {status: 200,});
 
 		response.cookies.set({
 			name: 'token',
@@ -63,8 +63,8 @@ export async function POST(req: Request) {
 		return response;
 	} catch (error) {
 		return NextResponse.json(
-				{ message: 'Server error' },
-				{ status: 500 }
+				{message: 'Server error'},
+				{status: 500}
 		);
 	}
 }

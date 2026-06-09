@@ -6,7 +6,7 @@ import ProductForm from './product-form';
 export default function NewProductPage() {
 	return (
 			<>
-				<Navbar />
+				<Navbar/>
 
 				<Container>
 					<div className="py-20">
@@ -24,7 +24,7 @@ export default function NewProductPage() {
 							</p>
 						</div>
 
-						<ProductForm />
+						<ProductForm/>
 					</div>
 				</Container>
 			</>

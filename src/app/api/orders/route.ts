@@ -13,8 +13,8 @@ export async function POST(req: NextRequest) {
 
 		if (!token) {
 			return NextResponse.json(
-					{ message: 'Unauthorized' },
-					{ status: 401 }
+					{message: 'Unauthorized'},
+					{status: 401}
 			);
 		}
 
@@ -25,12 +25,12 @@ export async function POST(req: NextRequest) {
 			userId: string;
 		};
 
-		const { items }: { items: CartItem[] } = await req.json();
+		const {items}: { items: CartItem[] } = await req.json();
 
 		if (!items || !items.length) {
 			return NextResponse.json(
-					{ message: 'Cart is empty' },
-					{ status: 400 }
+					{message: 'Cart is empty'},
+					{status: 400}
 			);
 		}
 
