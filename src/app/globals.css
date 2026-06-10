@@ -40,9 +40,8 @@ body {
 	background: var(--background);
 	color: var(--foreground);
 	font-family: var(--font-inter);
-	transition:
-					background-color 0.3s ease,
-					color 0.3s ease;
+	transition: background-color 0.3s ease,
+	color 0.3s ease;
 }
 
 h1,
@@ -54,8 +53,12 @@ h5 {
 }
 
 @keyframes glow {
-	0%, 100% { opacity: 0.6; }
-	50% { opacity: 1; }
+	0%, 100% {
+		opacity: 0.6;
+	}
+	50% {
+		opacity: 1;
+	}
 }
 
 .gold-glow {
@@ -63,12 +66,45 @@ h5 {
 }
 
 @keyframes shake {
-	0%, 100% { transform: translateX(0); }
-	25% { transform: translateX(-4px); }
-	50% { transform: translateX(4px); }
-	75% { transform: translateX(-4px); }
+	0%, 100% {
+		transform: translateX(0);
+	}
+	25% {
+		transform: translateX(-4px);
+	}
+	50% {
+		transform: translateX(4px);
+	}
+	75% {
+		transform: translateX(-4px);
+	}
 }
 
 .animate-shake {
 	animation: shake 0.3s ease-in-out;
+}
+
+@theme {
+	/* This defines the default duration for animations in your project */
+	--animate-duration-slow: 700ms;
+
+	/* Define custom timing functions */
+	--ease-gentle: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* ... keep your existing :root, .dark, and body styles ... */
+
+/* ADD THIS AT THE BOTTOM TO FORCE THE DRAWER SPEED */
+[data-slot="sheet-content"] {
+	/* Tailwind v4 CSS variables for animations */
+	--tw-enter-duration: 700ms !important;
+	--tw-exit-duration: 700ms !important;
+	animation-duration: 700ms !important;
+	animation-timing-function: var(--ease-gentle) !important;
+}
+
+[data-slot="sheet-overlay"] {
+	--tw-enter-duration: 700ms !important;
+	--tw-exit-duration: 700ms !important;
+	animation-duration: 700ms !important;
 }
