@@ -1,16 +1,34 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import {NextResponse} from 'next/server';
+import type {NextRequest} from 'next/server';
 import jwt from 'jsonwebtoken';
+import createMiddleware from "next-intl/middleware";
+
+const intlMiddleware = createMiddleware({
+	locales: ['en', 'fa'],
+	defaultLocale: 'en',
+});
 
 export function middleware(request: NextRequest) {
+	const response = intlMiddleware(request);
 	const token = request.cookies.get('token')?.value;
-	const { pathname } = request.nextUrl;
-	const isAdminRoute = pathname.startsWith('/admin');
-	const isLoginPage = pathname === '/login';
+	const {pathname} = request.nextUrl;
+	const isAdminRoute =
+			pathname.startsWith('/en/admin') ||
+			pathname.startsWith('/fa/admin');
+	const isLoginPage =
+			pathname === '/en/login' ||
+			pathname === '/fa/login';
+
 
 	// No token → block admin
 	if (isAdminRoute && !token) {
-		return NextResponse.redirect(new URL('/login', request.url));
+		const locale = pathname.startsWith('/fa')
+				? 'fa'
+				: 'en';
+
+		return NextResponse.redirect(
+				new URL(`/${locale}/login`, request.url)
+		);
 	}
 
 	// Token exists → verify it
@@ -23,18 +41,49 @@ export function middleware(request: NextRequest) {
 			};
 
 			// 🚨 ROLE CHECK (NEW PART)
-			if (isAdminRoute && decoded.role !== 'ADMIN') {
-				return NextResponse.redirect(new URL('/', request.url));
+			if (
+					isAdminRoute &&
+					decoded.role !== 'ADMIN'
+			) {
+				const locale = pathname.startsWith('/fa')
+						? 'fa'
+						: 'en';
+
+				return NextResponse.redirect(
+						new URL(`/${locale}`, request.url)
+				);
 			}
 
-			// If user is logged in and goes to login page
 			if (isLoginPage) {
-				return NextResponse.redirect(new URL('/admin/products', request.url));
+				const locale = pathname.startsWith('/fa')
+						? 'fa'
+						: 'en';
+
+				return NextResponse.redirect(
+						new URL(
+								`/${locale}/admin/products`,
+								request.url
+						)
+				);
 			}
-		} catch (err) {
-			return NextResponse.redirect(new URL('/login', request.url));
+		} catch {
+			const locale = pathname.startsWith('/fa')
+					? 'fa'
+					: 'en';
+
+			return NextResponse.redirect(
+					new URL(`/${locale}/login`, request.url)
+			);
 		}
 	}
 
-	return NextResponse.next();
+	return response;
 }
+
+export const config = {
+	matcher: [
+		'/',
+		'/(fa|en)/:path*',
+		'/((?!api|_next|.*\\..*).*)',
+	],
+};
