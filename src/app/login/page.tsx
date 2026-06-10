@@ -18,6 +18,7 @@ import {
 
 import {Input} from '@/src/components/ui/input';
 import {Button} from '@/src/components/ui/button';
+import {useT} from "@/src/i18n/use-t";
 
 const schema = z.object({
 	email: z.string().email('Invalid email'),
@@ -30,6 +31,7 @@ export default function LoginPage() {
 	const router = useRouter();
 	const [loading, setLoading] = useState(false);
 	const [errorShake, setErrorShake] = useState(false);
+	const t = useT();
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(schema),
@@ -121,7 +123,7 @@ export default function LoginPage() {
 									name="email"
 									render={({field}) => (
 											<FormItem>
-												<FormLabel>Email</FormLabel>
+												<FormLabel>{t('email')}</FormLabel>
 												<FormControl>
 													<Input
 															{...field}
@@ -145,7 +147,7 @@ export default function LoginPage() {
 									name="password"
 									render={({field}) => (
 											<FormItem>
-												<FormLabel>Password</FormLabel>
+												<FormLabel>{t('password')}</FormLabel>
 												<FormControl>
 													<Input
 															type="password"

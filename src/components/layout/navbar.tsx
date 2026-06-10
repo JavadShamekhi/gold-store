@@ -7,23 +7,35 @@ import CartDrawer from "@/src/components/layout/cart-drawer";
 import {useAuthStore} from "@/src/store/auth-store";
 import ThemeToggle from "@/src/components/theme-toggle";
 import GoldTicker from "@/src/components/gold-ticker";
-import {useEffect, useState} from "react";
+import {useEffect, useState, useSyncExternalStore} from "react";
+import LanguageSwitcher from "@/src/components/language-switcher";
+import {useT} from "@/src/i18n/use-t";
+
+const subscribe = () => () => {
+};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
 
 const Navbar = () => {
 	const user = useAuthStore((state) => state.user);
 	const [isScrolled, setIsScrolled] = useState(false);
+	const t = useT();
+
+	// This replaces "mounted" and satisfies ESLint
+	const isClient = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
 
 	useEffect(() => {
 		const handleScroll = () => {
-			if (window.scrollY > 20) {
-				setIsScrolled(true);
-			} else {
-				setIsScrolled(false);
-			}
+			setIsScrolled(window.scrollY > 20);
 		};
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
+
+	// If we are on the server, show a simple placeholder to prevent hydration mismatch
+	if (!isClient) {
+		return <header className="h-20 border-b border-[var(--border)] bg-[var(--background)]"/>;
+	}
 
 	return (
 			<header
@@ -50,10 +62,10 @@ const Navbar = () => {
 
 						{/* 2. Center Part (Nav Links) */}
 						<nav className="hidden md:flex items-center justify-center gap-8 text-sm">
-							<Link className="hover:text-[var(--primary)] transition" href="/">Home</Link>
-							<Link className="hover:text-[var(--primary)] transition" href="/products">Products</Link>
-							<Link className="hover:text-[var(--primary)] transition" href="/about">About</Link>
-							<Link className="hover:text-[var(--primary)] transition" href="/contact">Contact</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/">{t('home')}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/products">{t('products')}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/about">{t('about')}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/contact">{t('contact')}</Link>
 						</nav>
 
 						{/* 3. Right Part (User, Darkmode, Cart) */}
@@ -74,6 +86,7 @@ const Navbar = () => {
 										</Link>
 								)}
 							</div>
+							<LanguageSwitcher/>
 						</div>
 
 					</div>

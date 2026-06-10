@@ -1,38 +1,31 @@
 @import "tailwindcss";
 
 :root {
-	/* LIGHT MODE */
+	/* Define font variables */
+	--font-vazir: "Vazirmatn", sans-serif;
 
+	/* LIGHT MODE */
 	--background: #ffffff;
 	--foreground: #111111;
-
 	--card: #f8f8f8;
 	--card-foreground: #111111;
-
 	--primary: #d4af37;
 	--primary-foreground: #000000;
-
 	--secondary: #f1f1f1;
 	--secondary-foreground: #111111;
-
 	--border: #e5e5e5;
 }
 
 .dark {
 	/* DARK MODE */
-
 	--background: #0a0a0a;
 	--foreground: #ffffff;
-
 	--card: #111111;
 	--card-foreground: #ffffff;
-
 	--primary: #d4af37;
 	--primary-foreground: #000000;
-
 	--secondary: #1a1a1a;
 	--secondary-foreground: #ffffff;
-
 	--border: #2a2a2a;
 }
 
@@ -40,16 +33,59 @@ body {
 	background: var(--background);
 	color: var(--foreground);
 	font-family: var(--font-inter);
-	transition: background-color 0.3s ease,
-	color 0.3s ease;
+	font-feature-settings: "cv11", "ss01";
+	transition: background-color 0.3s ease, color 0.3s ease;
+	text-rendering: optimizeLegibility;
+	-webkit-font-smoothing: antialiased;
+	font-size: 18px;
+	line-height: 1.7;
 }
 
-h1,
-h2,
-h3,
-h4,
-h5 {
-	font-family: var(--font-playfair);
+@theme {
+	--font-en: var(--font-inter), ui-sans-serif, system-ui;
+	--font-fa: var(--font-vazir), ui-sans-serif, system-ui;
+	--animate-duration-slow: 700ms;
+	--ease-gentle: cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* 1. When lang is English (default) */
+html[lang="en"] body {
+	font-family: var(--font-inter), var(--font-vazir), sans-serif;
+}
+
+/* 2. When lang is Persian */
+html[lang="fa"] body {
+	font-family: var(--font-vazir), var(--font-inter), sans-serif;
+}
+
+/* 3. Handle Headings specifically */
+h1, h2, h3, h4, h5 {
+	/* If it's English, use Playfair. If it's Persian, use Vazirmatn */
+	font-family: var(--font-playfair), var(--font-vazir), serif;
+}
+
+html[lang="fa"] h1,
+html[lang="fa"] h2,
+html[lang="fa"] h3,
+html[lang="fa"] h4,
+html[lang="fa"] h5 {
+	font-family: var(--font-vazir), serif;
+}
+
+.font-en {
+	font-family: var(--font-inter);
+	letter-spacing: -0.01em;
+	weight: 800;
+}
+
+.font-fa {
+	font-family: var(--font-vazir);
+	letter-spacing: 0;
+	weight: 400;
+}
+
+h1, h2, h3, h4, h5 {
+	font-weight: 700;
 }
 
 @keyframes glow {
@@ -82,29 +118,4 @@ h5 {
 
 .animate-shake {
 	animation: shake 0.3s ease-in-out;
-}
-
-@theme {
-	/* This defines the default duration for animations in your project */
-	--animate-duration-slow: 700ms;
-
-	/* Define custom timing functions */
-	--ease-gentle: cubic-bezier(0.32, 0.72, 0, 1);
-}
-
-/* ... keep your existing :root, .dark, and body styles ... */
-
-/* ADD THIS AT THE BOTTOM TO FORCE THE DRAWER SPEED */
-[data-slot="sheet-content"] {
-	/* Tailwind v4 CSS variables for animations */
-	--tw-enter-duration: 700ms !important;
-	--tw-exit-duration: 700ms !important;
-	animation-duration: 700ms !important;
-	animation-timing-function: var(--ease-gentle) !important;
-}
-
-[data-slot="sheet-overlay"] {
-	--tw-enter-duration: 700ms !important;
-	--tw-exit-duration: 700ms !important;
-	animation-duration: 700ms !important;
 }
