@@ -1,8 +1,7 @@
 'use client';
 
 import {createContext, useContext, useEffect, useState} from 'react';
-
-type Lang = 'en' | 'fa';
+import {langStorage, Lang} from './language-storage';
 
 type LangContextType = {
 	lang: Lang;
@@ -19,35 +18,39 @@ export const useLanguage = () => useContext(LanguageContext);
 
 export const LanguageProvider = ({
 	                                 children,
+	                                 initialLang,
                                  }: {
 	children: React.ReactNode;
+	initialLang?: Lang;
 }) => {
-	// ✅ FIX: lazy init instead of useEffect
-	const [lang, setLang] = useState<Lang>(() => {
-		if (typeof window === 'undefined') return 'en';
+	const [lang, setLangState] = useState<Lang>(initialLang || 'en');
 
-		return (localStorage.getItem('lang') as Lang) || 'en';
-	});
-
+	// 🔄 hydrate from localStorage AFTER mount
 	useEffect(() => {
-		localStorage.setItem('lang', lang);
+		const stored = langStorage.get();
 
-		const html = document.documentElement;
-		html.lang = lang;
-		html.dir = lang === 'fa' ? 'rtl' : 'ltr';
-
-		// Use the classes defined in your @theme
-		if (lang === 'fa') {
-			html.classList.add('font-fa');
-			html.classList.remove('font-en');
-		} else {
-			html.classList.add('font-en');
-			html.classList.remove('font-fa');
+		if (stored && stored !== lang) {
+			setLangState(stored);
 		}
+	}, []);
+
+	// 🔄 sync changes
+	useEffect(() => {
+		langStorage.set(lang);
+
+		document.cookie = `lang=${lang}; path=/; max-age=31536000`;
+
+		document.documentElement.lang = lang;
+		document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+
+		document.documentElement.classList.remove('font-fa', 'font-en');
+		document.documentElement.classList.add(
+				lang === 'fa' ? 'font-fa' : 'font-en'
+		);
 	}, [lang]);
 
 	return (
-			<LanguageContext.Provider value={{lang, setLang}}>
+			<LanguageContext.Provider value={{lang, setLang: setLangState}}>
 				{children}
 			</LanguageContext.Provider>
 	);
