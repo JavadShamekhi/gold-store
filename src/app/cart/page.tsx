@@ -6,6 +6,7 @@ import {toast} from "sonner";
 import Navbar from '@/src/components/layout/navbar';
 import Container from '@/src/components/layout/container';
 import {useCartStore} from '@/src/store/cart-store';
+import {useT} from "@/src/i18n/use-t";
 
 export default function CartPage() {
 	const {
@@ -17,7 +18,7 @@ export default function CartPage() {
 	} = useCartStore();
 
 	const router = useRouter();
-
+	const t = useT();
 	const totalPrice = items.reduce(
 			(acc, item) => acc + item.price * item.quantity,
 			0
@@ -26,6 +27,7 @@ export default function CartPage() {
 	const handleCheckout = async () => {
 		try {
 			const response = await fetch('/api/orders', {
+				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
@@ -66,12 +68,12 @@ export default function CartPage() {
 				<Container>
 					<div className="py-20">
 						<h1 className="text-5xl font-bold mb-12">
-							Shopping Cart
+							{t('shoppingCart')}
 						</h1>
 
 						{items.length === 0 ? (
 								<p className="text-[var(--foreground)]/60">
-									Your cart is empty.
+									{t('emptyCart')}
 								</p>
 						) : (
 								<div className="space-y-6">
@@ -131,14 +133,14 @@ export default function CartPage() {
 														}
 														className="text-red-400 hover:text-red-500 transition cursor-pointer"
 												>
-													Remove
+													{t('delete')}
 												</button>
 											</div>
 									))}
 
 									<div className="flex justify-between items-center mt-12">
 										<h2 className="text-3xl font-bold">
-											Total:
+											{t('total')}:
 										</h2>
 
 										<p className="text-4xl font-bold text-[var(--primary)]">
@@ -150,7 +152,7 @@ export default function CartPage() {
 											onClick={handleCheckout}
 											className="w-full mt-8 bg-[var(--primary)] text-[var(--primary-foreground)] py-4 rounded-full font-semibold hover:opacity-90 transition cursor-pointer"
 									>
-										Checkout
+										{t('checkout')}
 									</button>
 
 
