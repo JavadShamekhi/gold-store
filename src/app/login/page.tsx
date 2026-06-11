@@ -6,7 +6,6 @@ import {z} from 'zod';
 import {useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {toast} from 'sonner';
-
 import {
 	Form,
 	FormControl,
@@ -15,10 +14,11 @@ import {
 	FormLabel,
 	FormMessage,
 } from '@/src/components/ui/form';
-
 import {Input} from '@/src/components/ui/input';
 import {Button} from '@/src/components/ui/button';
 import {useT} from "@/src/i18n/use-t";
+import {useAuthStore} from "@/src/store/auth-store";
+import {tokenStorage} from "@/src/auth/token-storage";
 
 const schema = z.object({
 	email: z.string().email('Invalid email'),
@@ -29,6 +29,7 @@ type FormValues = z.infer<typeof schema>;
 
 export default function LoginPage() {
 	const router = useRouter();
+	const login = useAuthStore((state) => state.login);
 	const [loading, setLoading] = useState(false);
 	const [errorShake, setErrorShake] = useState(false);
 	const t = useT();
@@ -48,7 +49,6 @@ export default function LoginPage() {
 	const onSubmit = async (values: FormValues) => {
 		try {
 			setLoading(true);
-
 			const res = await fetch('/api/auth/login', {
 				method: 'POST',
 				headers: {'Content-Type': 'application/json'},
@@ -60,11 +60,15 @@ export default function LoginPage() {
 			if (!res.ok) {
 				throw new Error(data.message || 'Login failed');
 			}
-
-			toast.success('Welcome back, Admin');
-
-			router.push('/admin/products');
+			tokenStorage.set(data.token);
+			login(data?.user);
+			toast.success('Welcome back!');
 			router.refresh();
+			if (data?.user?.role === 'ADMIN') {
+				router.push('/admin');
+			} else {
+				router.push('/');
+			}
 		} catch (err) {
 			setErrorShake(true);
 			setTimeout(() => setErrorShake(false), 500);
@@ -111,7 +115,7 @@ export default function LoginPage() {
 					</h1>
 
 					<p className="text-center text-[var(--foreground)]/60 mt-2 mb-8">
-						Admin Access Portal
+						{t('login')}
 					</p>
 
 					<Form {...form}>
