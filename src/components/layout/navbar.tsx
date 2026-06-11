@@ -1,7 +1,7 @@
 'use client';
 
 import Container from "./container";
-import {User} from "lucide-react";
+import {LogOut, User} from "lucide-react";
 import Link from "next/link";
 import CartDrawer from "@/src/components/layout/cart-drawer";
 import {useAuthStore} from "@/src/store/auth-store";
@@ -10,6 +10,7 @@ import GoldTicker from "@/src/components/gold-ticker";
 import {useEffect, useState, useSyncExternalStore} from "react";
 import LanguageSwitcher from "@/src/components/language-switcher";
 import {useT} from "@/src/i18n/use-t";
+import {useRouter} from "next/navigation";
 
 const subscribe = () => () => {
 };
@@ -17,8 +18,9 @@ const getSnapshot = () => true;
 const getServerSnapshot = () => false;
 
 const Navbar = () => {
-	const user = useAuthStore((state) => state.user);
+	const {user, logout} = useAuthStore();
 	const [isScrolled, setIsScrolled] = useState(false);
+	const router = useRouter();
 	const t = useT();
 
 	// This replaces "mounted" and satisfies ESLint
@@ -31,6 +33,13 @@ const Navbar = () => {
 		window.addEventListener("scroll", handleScroll);
 		return () => window.removeEventListener("scroll", handleScroll);
 	}, []);
+
+	// Handle Logout Click
+	const handleLogout = async () => {
+		await logout(); // This calls the API to clear the cookie and resets Zustand
+		router.push('/'); // Send user to home page
+		router.refresh(); // Refresh to clear any server-side data
+	};
 
 	// If we are on the server, show a simple placeholder to prevent hydration mismatch
 	if (!isClient) {
@@ -74,15 +83,24 @@ const Navbar = () => {
 							<CartDrawer/>
 							<div className="flex items-center">
 								{user ? (
-										<span className="text-sm text-[var(--foreground)]/70">
-									{user.email}
-								</span>
+										<div className="flex items-center gap-3">
+										<span className="text-sm text-[var(--foreground)]/70 hidden sm:block">
+											{user.email}
+										</span>
+											<button
+													onClick={handleLogout}
+													className="hover:text-red-500 transition cursor-pointer p-1"
+													title="Logout"
+											>
+												<LogOut size={20}/>
+											</button>
+										</div>
 								) : (
 										<Link
 												href="/login"
 												className="hover:text-[var(--primary)] transition"
 										>
-											<User size={isScrolled ? 18 : 22}/>
+											<User size={isScrolled ? 20 : 22}/>
 										</Link>
 								)}
 							</div>

@@ -37,9 +37,9 @@ const CartDrawer = () => {
 				{/* TRIGGER BUTTON */}
 				<button
 						onClick={() => setIsOpen(true)}
-						className="relative hover:text-[var(--primary)] transition cursor-pointer bg-transparent border-none"
+						className="relative transition cursor-pointer bg-transparent rounded-full border border-[var(--border)] hover:border-[var(--primary)] p-2 hover:scale-105"
 				>
-					<ShoppingCart size={22}/>
+					<ShoppingCart size={18}/>
 					{items.length > 0 && (
 							<span
 									className="absolute -top-2 -right-2 bg-[var(--primary)] text-black text-xs w-5 h-5 rounded-full flex items-center justify-center">
