@@ -5,6 +5,6 @@ export const useT = () => {
 	const {lang} = useLanguage();
 
 	return (key: keyof typeof dict['en']) => {
-		return dict[lang][key];
+		return dict[lang][key] ?? dict['en'][key];
 	};
 };

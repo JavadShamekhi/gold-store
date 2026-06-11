@@ -13,6 +13,7 @@ export default function LanguageSwitcher() {
 				border-[var(--border)]
 				hover:border-[var(--primary)]
 				transition text-sm
+				hover:scale-105
 				cursor-pointer
 			"
 			>

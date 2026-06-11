@@ -19,7 +19,7 @@ export default function ThemeToggle() {
 				onClick={() => setTheme(
 						theme === 'dark' ? 'light' : 'dark'
 				)}
-				className="cursor-pointer rounded-full border border-[var(--border)] p-2 transition hover:scale-105"
+				className="cursor-pointer rounded-full border border-[var(--border)] hover:border-[var(--primary)] p-2 transition hover:scale-105"
 			>
 				{theme === 'dark' ? (
 						<Sun size={18} />

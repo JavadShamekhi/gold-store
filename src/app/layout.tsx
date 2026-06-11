@@ -7,6 +7,8 @@ import {LanguageProvider} from "@/src/i18n/language-context";
 import '@fontsource/vazirmatn/400.css';
 import '@fontsource/vazirmatn/500.css';
 import '@fontsource/vazirmatn/700.css';
+import AuthProvider from "@/src/components/providers/auth-provider";
+import {cookies} from "next/headers";
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -23,22 +25,25 @@ export const metadata: Metadata = {
 	description: 'Luxury Jewelry E-Commerce Platform',
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	                                   children,
                                    }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const cookieStore = await cookies()
+	const initialLang = cookieStore.get('lang')?.value || 'en';
 
 	return (
-			<html lang="en" suppressHydrationWarning>
+			<html lang={initialLang} suppressHydrationWarning>
 			<body
-					suppressHydrationWarning
 					className={`${inter.variable} ${playfair.variable} antialiased`}
 			>
 			<LanguageProvider>
 				<ThemeProvider>
-					<Toaster richColors/>
-					{children}
+					<AuthProvider>
+						<Toaster richColors/>
+						{children}
+					</AuthProvider>
 				</ThemeProvider>
 			</LanguageProvider>
 			</body>
