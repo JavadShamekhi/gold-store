@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import {prisma} from '@/src/lib/prisma';
-import DeleteButton from "@/src/components/admin/delete-button";
+import DeleteButton from "@/src/components/buttons/delete-button";
 
 export default async function AdminProductsPage() {
 	const products = await prisma.product.findMany({
