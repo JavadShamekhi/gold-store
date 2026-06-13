@@ -13,7 +13,6 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/src/components/ui/alert-dialog';
-import { Button } from '@/src/components/ui/button';
 
 export default function DeleteButton({
 	                                     id,
