@@ -6,7 +6,7 @@ import Link from "next/link";
 import CartDrawer from "@/src/components/layout/cart-drawer";
 import {useAuthStore} from "@/src/store/auth-store";
 import ThemeToggle from "@/src/components/theme-toggle";
-import GoldTicker from "@/src/components/gold-ticker";
+import GoldTicker from "@/src/components/gold/gold-ticker";
 import {useEffect, useState, useSyncExternalStore} from "react";
 import LanguageSwitcher from "@/src/components/language-switcher";
 import {useT} from "@/src/i18n/use-t";

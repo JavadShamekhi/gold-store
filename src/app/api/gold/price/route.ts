@@ -1,3 +1,5 @@
+import {prisma} from "@/src/lib/prisma";
+
 export async function GET() {
 	try {
 		const res = await fetch(
@@ -18,6 +20,37 @@ export async function GET() {
 					{status: 404}
 			);
 		}
+
+		// 🔥 CHECK LAST SAVED PRICE (prevent duplicates)
+		const last = await prisma.goldPrice.findFirst({
+			orderBy: {updatedAt: "desc"},
+		});
+
+		if (last && last.pricePerGram === gold18k.price) {
+			return Response.json({
+				cached: true,
+				price: last.pricePerGram,
+			});
+		}
+
+		// 💾 SAVE TO DATABASE
+		await prisma.goldPrice.create({
+			data: {
+				pricePerGram: gold18k.price,
+			},
+		});
+
+		// 🧹 DELETE OLD DATA (older than 7 days)
+		const sevenDaysAgo = new Date();
+		sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+		await prisma.goldPrice.deleteMany({
+			where: {
+				updatedAt: {
+					lt: sevenDaysAgo,
+				},
+			},
+		});
 
 		return Response.json({
 			price: gold18k.price,
