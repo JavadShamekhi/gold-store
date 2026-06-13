@@ -45,6 +45,8 @@ export const dict = {
 		weight: 'Weight',
 		stock: 'Stock',
 		preview: 'Preview',
+		quantity: 'Quantity',
+		goToCart: 'Go to Cart',
 	},
 	fa: {
 		home: 'خانه',
@@ -53,7 +55,7 @@ export const dict = {
 		contact: 'تماس',
 		addToCart: 'افزودن به سبد',
 		checkout: 'پرداخت',
-		emptyCart: '.سبد خرید شما خالی است',
+		emptyCart: 'سبد خرید شما خالی است.',
 		login: 'ورود',
 		delete: 'حذف',
 		edit: 'ویرایش',
@@ -92,5 +94,7 @@ export const dict = {
 		weight: 'وزن (گرم)',
 		stock: 'موجودی',
 		preview: 'پیش نمایش',
+		quantity: 'تعداد',
+		goToCart: 'مشاهده سبد خرید',
 	},
 } as const;
