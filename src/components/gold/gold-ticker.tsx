@@ -8,7 +8,7 @@ export default function GoldTicker() {
 
 	useEffect(() => {
 		const fetchPrice = async () => {
-			const res = await fetch('/api/gold-price');
+			const res = await fetch('/api/gold/price');
 			const data = await res.json();
 
 			setPrice(data?.price);
