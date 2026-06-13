@@ -4,42 +4,54 @@ import {useState, useEffect} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {ShoppingCart, X} from 'lucide-react';
+
 import {useCartStore} from '@/src/store/cart-store';
+import {useT} from '@/src/i18n/use-t';
+import {useLanguage} from '@/src/i18n/language-context';
+import {rtl} from '@/src/lib/dir/rtl';
 
 const CartDrawer = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const items = useCartStore((state) => state.items);
+	const t = useT();
+	const {lang} = useLanguage();
+	const isRTL = lang === 'fa';
 
 	const totalPrice = items.reduce(
 			(acc, item) => acc + item.price * item.quantity,
 			0
 	);
 
-	// Prevent scrolling when drawer is open
+	// lock scroll
 	useEffect(() => {
-		if (isOpen) {
-			document.body.style.overflow = 'hidden';
-		} else {
-			document.body.style.overflow = 'unset';
-		}
+		document.body.style.overflow = isOpen ? 'hidden' : 'unset';
 	}, [isOpen]);
 
+	// ESC close
 	useEffect(() => {
 		const handleEsc = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') setIsOpen(false);
 		};
+
 		window.addEventListener('keydown', handleEsc);
 		return () => window.removeEventListener('keydown', handleEsc);
 	}, []);
 
+	const drawerPosition = isOpen
+			? 'translate-x-0'
+			: isRTL
+					? '-translate-x-full'
+					: 'translate-x-full';
+
 	return (
 			<>
-				{/* TRIGGER BUTTON */}
+				{/* TRIGGER */}
 				<button
 						onClick={() => setIsOpen(true)}
-						className="relative transition cursor-pointer bg-transparent rounded-full border border-[var(--border)] hover:border-[var(--primary)] p-2 hover:scale-105"
+						className="relative cursor-pointer rounded-full border border-[var(--border)] p-2 hover:border-[var(--primary)] hover:scale-105 transition"
 				>
 					<ShoppingCart size={18}/>
+
 					{items.length > 0 && (
 							<span
 									className="absolute -top-2 -right-2 bg-[var(--primary)] text-black text-xs w-5 h-5 rounded-full flex items-center justify-center">
@@ -48,48 +60,74 @@ const CartDrawer = () => {
 					)}
 				</button>
 
-				{/* BACKDROP (The dark blur part) */}
+				{/* BACKDROP */}
 				<div
 						className={`
-					fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm transition-opacity duration-1000 ease-in-out
+					fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm
+					transition-opacity duration-300
 					${isOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}
 				`}
 						onClick={() => setIsOpen(false)}
 				/>
 
-				{/* DRAWER PANEL */}
+				{/* DRAWER */}
 				<div
 						className={`
-					fixed top-0 right-0 z-[101] h-full w-full sm:max-w-lg bg-[var(--background)] 
-					border-l border-[var(--border)] shadow-2xl transform transition-transform duration-1000 ease-in-out
-					${isOpen ? 'translate-x-0' : 'translate-x-full'}
+					fixed top-0 ${isRTL ? 'left-0' : 'right-0'}
+					z-[101]
+					h-full w-full sm:max-w-lg
+					bg-[var(--background)]
+					border-[var(--border)]
+					shadow-2xl
+					transform
+					${isOpen ? 'transition-transform duration-500 ease-in-out' : ''}
+					${drawerPosition}
+					${rtl('border-l', 'border-r')}
 				`}
 				>
 					{/* CLOSE BUTTON */}
 					<button
 							onClick={() => setIsOpen(false)}
-							className="absolute top-5 right-5 p-2 hover:bg-white/10 rounded-full transition cursor-pointer"
+							className={`
+						absolute top-5
+						${rtl('right-5', 'left-5')}
+						p-2 rounded-full hover:bg-white/10 transition cursor-pointer
+					`}
 					>
 						<X size={24} className="text-[var(--foreground)]"/>
 					</button>
 
-					<div className="h-full flex flex-col p-8">
+					{/* CONTENT */}
+					<div
+							className={`
+						h-full flex flex-col p-8
+						${rtl('text-left', 'text-right')}
+					`}
+					>
 						<h2 className="text-2xl font-bold text-[var(--foreground)] mb-10">
-							Shopping Cart
+							{t('shoppingCart')}
 						</h2>
 
-						<div className="flex-1 overflow-y-auto pr-2 custom-scrollbar">
-							{/* EMPTY STATE */}
+						{/* ITEMS */}
+						<div
+								className={`
+							flex-1 overflow-y-auto custom-scrollbar
+							${rtl('pr-2', 'pl-2')}
+						`}
+						>
 							{items.length === 0 ? (
 									<p className="text-[var(--foreground)]/60">
-										Your cart is empty.
+										{t('emptyCart')}
 									</p>
 							) : (
 									<div className="flex flex-col gap-6">
-										{/* ITEMS */}
 										{items.map((item) => (
-												<div key={item.id} className="flex gap-4 pb-5 border-b border-[var(--border)]">
-													<div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-white/5">
+												<div
+														key={item.id}
+														className='flex pb-5 border-b border-[var(--border)] items-center'
+												>
+													{/* IMAGE */}
+													<div className="relative w-24 h-24 rounded-2xl overflow-hidden bg-white/5 shrink-0">
 														<Image
 																src={item.image}
 																alt={item.title}
@@ -98,15 +136,20 @@ const CartDrawer = () => {
 														/>
 													</div>
 
-													<div className="flex-1">
-														<h3 className="font-semibold text-[var(--foreground)]">
+													{/* TEXT */}
+													<div
+															className={`flex-1 min-w-0 ${isRTL ? 'pr-4 text-right' : 'pl-4 text-left'}`}
+													>
+														<h3 className="font-semibold text-[var(--foreground)] truncate">
 															{item.title}
 														</h3>
+
 														<p className="text-[var(--primary)] mt-2 font-medium">
 															${item.price}
 														</p>
+
 														<p className="text-sm text-[var(--foreground)]/60 mt-1">
-															Qty: {item.quantity}
+															{t('quantity')}: {item.quantity}
 														</p>
 													</div>
 												</div>
@@ -115,25 +158,33 @@ const CartDrawer = () => {
 							)}
 						</div>
 
-						{/* FOOTER / TOTAL */}
+						{/* FOOTER */}
 						{items.length > 0 && (
 								<div className="mt-auto pt-6 border-t border-[var(--border)]">
-									<div className="flex items-center justify-between mb-6">
-								<span className="text-xl font-semibold text-[var(--foreground)]">
-									Total
+									<div
+											className={`
+									flex items-center justify-between mb-6
+									${rtl('', 'flex-row-reverse')}
+								`}
+									>
+								<span className="text-xl font-semibold">
+									{t('total')}
 								</span>
+
 										<span className="text-2xl font-bold text-[var(--primary)]">
 									${totalPrice}
 								</span>
 									</div>
 
-									<Link
-											href="/cart"
-											onClick={() => setIsOpen(false)}
-											className="block w-full bg-[var(--primary)] text-black text-center py-4 rounded-full font-semibold hover:opacity-90 transition"
-									>
-										Go To Cart
-									</Link>
+									<div className="flex justify-center mt-6">
+										<Link
+												href="/cart"
+												onClick={() => setIsOpen(false)}
+												className="block px-8 py-3 rounded-full bg-[var(--primary)] text-black font-semibold hover:opacity-90 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+										>
+											{t('goToCart')}
+										</Link>
+									</div>
 								</div>
 						)}
 					</div>
