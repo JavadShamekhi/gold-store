@@ -4,8 +4,19 @@ import bcrypt from "bcryptjs";
 const prisma = new PrismaClient();
 
 async function main() {
-	await prisma.product.deleteMany();
+	console.log("🌱 Seeding database...");
 
+	// پاک کردن دیتاهای قبلی
+	await prisma.goldTransaction.deleteMany();
+	await prisma.wallet.deleteMany();
+	await prisma.orderItem.deleteMany();
+	await prisma.order.deleteMany();
+	await prisma.product.deleteMany();
+	await prisma.user.deleteMany();
+
+	// =========================
+	// 🟡 PRODUCTS
+	// =========================
 	await prisma.product.createMany({
 		data: [
 			{
@@ -47,24 +58,95 @@ async function main() {
 		]
 	});
 
-	const adminEmail = 'admin@goldstore.com';
-	const existingAdmin = await prisma.user.findUnique({
-		where: { email: adminEmail },
-	});
-	if (!existingAdmin) {
-		const hashedPassword = await bcrypt.hash('123456', 10);
-
-		await prisma.user.create({
-			data: {
-				email: adminEmail,
-				password: hashedPassword,
-				role: Role.ADMIN,
+	// =========================
+	// 👑 ADMINS
+	// =========================
+	const admin1 = await prisma.user.create({
+		data: {
+			email: "admin@goldstore.com",
+			password: await bcrypt.hash("123456", 10),
+			role: Role.ADMIN,
+			wallet: {
+				create: {
+					balanceG: 0,
+				},
 			},
-		});
-		console.log("Admin user created");
-	}
+		},
+	});
 
-	console.log("Seed completed");
+	const admin2 = await prisma.user.create({
+		data: {
+			email: "admin2@goldstore.com",
+			password: await bcrypt.hash("123456", 10),
+			role: Role.ADMIN,
+			wallet: {
+				create: {
+					balanceG: 0,
+				},
+			},
+		},
+	});
+
+	// =========================
+	// 👤 USERS
+	// =========================
+	const user1 = await prisma.user.create({
+		data: {
+			email: "user1@test.com",
+			password: await bcrypt.hash("123456", 10),
+			role: Role.CUSTOMER,
+			wallet: {
+				create: {
+					balanceG: 2.5,
+				},
+			},
+		},
+	});
+
+	const user2 = await prisma.user.create({
+		data: {
+			email: "user2@test.com",
+			password: await bcrypt.hash("123456", 10),
+			role: Role.CUSTOMER,
+			wallet: {
+				create: {
+					balanceG: 0.75,
+				},
+			},
+		},
+	});
+
+	// =========================
+	// 🪙 GOLD TRANSACTIONS (simulate history)
+	// =========================
+	await prisma.goldTransaction.createMany({
+		data: [
+			{
+				userId: user1.id,
+				type: "BUY",
+				grams: 2,
+				pricePerGram: 70,
+				totalUSD: 140,
+			},
+			{
+				userId: user1.id,
+				type: "BUY",
+				grams: 0.5,
+				pricePerGram: 72,
+				totalUSD: 36,
+			},
+			{
+				userId: user2.id,
+				type: "BUY",
+				grams: 1,
+				pricePerGram: 70,
+				totalUSD: 70,
+			},
+		]
+	});
+
+	console.log("✅ Seed completed successfully");
+
 }
 
 main()

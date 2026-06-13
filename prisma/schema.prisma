@@ -18,14 +18,21 @@ enum OrderStatus {
   CANCELLED
 }
 
+enum GoldTransactionType {
+  BUY
+  SELL
+}
+
 model User {
-  id        String      @id @default(uuid())
-  email     String   @unique
-  password  String
-  role      Role     @default(CUSTOMER)
-  orders    Order[]
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id              String            @id @default(uuid())
+  email           String            @unique
+  password        String
+  role            Role              @default(CUSTOMER)
+  orders          Order[]
+  wallet          Wallet?
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+  GoldTransaction GoldTransaction[]
 }
 
 model Product {
@@ -37,28 +44,56 @@ model Product {
   stock       Int
   image       String
   category    String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   orderItems  OrderItem[]
 }
 
 model Order {
-  id          String         @id @default(uuid())
-  totalPrice  Float
-  status      OrderStatus @default(PENDING)
-  userId      String
-  user        User        @relation(fields: [userId], references: [id])
-  items       OrderItem[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id         String      @id @default(uuid())
+  totalPrice Float
+  status     OrderStatus @default(PENDING)
+  userId     String
+  user       User        @relation(fields: [userId], references: [id])
+  items      OrderItem[]
+  createdAt  DateTime    @default(now())
+  updatedAt  DateTime    @updatedAt
 }
 
 model OrderItem {
-  id         String @id @default(uuid())
-  quantity   Int
-  price      Float
-  orderId    String
-  order      Order @relation(fields: [orderId], references: [id])
-  productId  String
-  product    Product @relation(fields: [productId], references: [id])
+  id        String  @id @default(uuid())
+  quantity  Int
+  price     Float
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+}
+
+model Wallet {
+  id        String   @id @default(uuid())
+  userId    String   @unique
+  balanceG  Float    @default(0)
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model GoldTransaction {
+  id           String              @id @default(uuid())
+  userId       String
+  type         GoldTransactionType // BUY | SELL
+  grams        Float
+  pricePerGram Float
+  totalUSD     Float
+  createdAt    DateTime            @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+}
+
+model GoldPrice {
+  id           String   @id @default(uuid())
+  pricePerGram Float
+  updatedAt    DateTime @updatedAt
+
+  @@index([updatedAt])
 }
