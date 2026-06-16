@@ -1,4 +1,5 @@
 import {prisma} from "@/src/lib/prisma";
+import {GoldPriceItem} from "@/src/types/gold-price";
 
 export async function GET() {
 	try {
@@ -11,7 +12,7 @@ export async function GET() {
 
 		// 👇 extract 18K gold
 		const gold18k = data?.gold.find(
-				(item) => item.symbol === 'IR_GOLD_18K'
+				(item: GoldPriceItem) => item.symbol === 'IR_GOLD_18K'
 		);
 
 		if (!gold18k) {
