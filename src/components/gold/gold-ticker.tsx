@@ -1,87 +1,104 @@
-'use client';
+import { prisma } from '@/src/lib/prisma';
+import { GoldPriceItem } from '@/src/types/gold-price';
 
-import {useEffect, useState} from 'react';
+export const runtime = 'nodejs';
 
-export default function GoldTicker() {
-	const [price, setPrice] = useState<number | null>(null);
-	const [change, setChange] = useState<number | null>(null);
-	const [loading, setLoading] = useState(true);
+export async function GET() {
+	try {
+		const controller = new AbortController();
+		const timeout = setTimeout(() => controller.abort(), 8000);
 
-	useEffect(() => {
-		const fetchPrice = async () => {
-			try {
-				const res = await fetch('/api/gold/price', {
+		const res = await fetch(
+				'https://api.brsapi.ir/Market/Gold_Currency.php?key=BQ5cI32ZWyudV73G3A1fTZxKmgV7X4K4',
+				{
 					cache: 'no-store',
-				});
-
-				if (!res.ok) {
-					throw new Error('Failed to fetch gold price');
+					signal: controller.signal,
 				}
+		);
 
-				const data = await res.json();
+		clearTimeout(timeout);
 
-				setPrice(data?.price ?? null);
-				setChange(data?.change ?? null);
-			} catch (error) {
-				console.error('Gold price error:', error);
-			} finally {
-				setLoading(false);
-			}
-		};
+		if (!res.ok) {
+			throw new Error('External API failed');
+		}
 
-		fetchPrice();
+		const data = await res.json();
 
-		// Update every 30 seconds
-		const interval = setInterval(fetchPrice, 30000);
+		const gold18k = data?.gold?.find(
+				(item: GoldPriceItem) =>
+						item.symbol === 'IR_GOLD_18K'
+		);
 
-		return () => clearInterval(interval);
-	}, []);
+		if (!gold18k) {
+			throw new Error('Gold data not found');
+		}
 
-	return (
-			<div
-					className="
-				flex items-center gap-2
-				px-3 py-1.5
-				rounded-full
-				border border-[var(--border)]
-				bg-[var(--card)]
-				backdrop-blur-md
-				shadow-sm
-			"
-			>
-				{/* LIVE DOT */}
-				<span className="relative flex h-2 w-2">
-				<span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75"/>
-				<span className="relative inline-flex h-2 w-2 rounded-full bg-green-500"/>
-			</span>
+		// آخرین رکورد
+		const lastPrice = await prisma.goldPrice.findFirst({
+			orderBy: {
+				updatedAt: 'desc',
+			},
+		});
 
-				{/* LABEL */}
-				<span className="text-xs text-[var(--foreground)]/60">
-				18K Gold
-			</span>
+		// فقط اگر قیمت عوض شده ذخیره کن
+		if (
+				!lastPrice ||
+				lastPrice.pricePerGram !== gold18k.price
+		) {
+			await prisma.goldPrice.create({
+				data: {
+					pricePerGram: gold18k.price,
+				},
+			});
+		}
 
-				{/* PRICE */}
-				<span className="font-semibold text-[#d4af37]">
-				{loading
-						? 'Loading...'
-						: price !== null
-								? `${(price * 10).toLocaleString()} IRR`
-								: 'Unavailable'}
-			</span>
+		// حذف داده‌های قدیمی‌تر از 7 روز
+		const sevenDaysAgo = new Date();
+		sevenDaysAgo.setDate(
+				sevenDaysAgo.getDate() - 7
+		);
 
-				{/* CHANGE */}
-				{change !== null && (
-						<span
-								className={`text-xs font-medium ${
-										change >= 0
-												? 'text-green-500'
-												: 'text-red-500'
-								}`}
-						>
-					{change >= 0 ? '+' : ''}
-							{change.toFixed(2)}%
-				</span>
-				)}
-			</div>
-	);
+		await prisma.goldPrice.deleteMany({
+			where: {
+				updatedAt: {
+					lt: sevenDaysAgo,
+				},
+			},
+		});
+
+		return Response.json({
+			price: gold18k.price,
+			change: gold18k.change_percent,
+			time: gold18k.time,
+			date: gold18k.date,
+			source: 'live',
+		});
+	} catch (error) {
+		console.error('Gold API Error:', error);
+
+		// fallback از DB
+		const lastPrice = await prisma.goldPrice.findFirst({
+			orderBy: {
+				updatedAt: 'desc',
+			},
+		});
+
+		if (lastPrice) {
+			return Response.json({
+				price: lastPrice.pricePerGram,
+				change: null,
+				cached: true,
+				source: 'database',
+			});
+		}
+
+		return Response.json(
+				{
+					error: 'Gold service unavailable',
+				},
+				{
+					status: 500,
+				}
+		);
+	}
 }
