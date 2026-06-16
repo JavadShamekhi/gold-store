@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import {useEffect, useState} from 'react';
 
 export default function GoldTicker() {
 	const [price, setPrice] = useState<number | null>(null);
@@ -41,17 +41,19 @@ export default function GoldTicker() {
 				<span className="text-muted-foreground">18K Gold:</span>
 				{/* PRICE */}
 				<span className="text-[#d4af37]">
-					{price ? (price*10).toLocaleString() : '...'} IRR
+					{price ? (price * 10).toLocaleString() : '...'} IRR
 				</span>
 
 				{/* CHANGE */}
-				<span
-						className={
-							change > 0 ? 'text-green-500' : 'text-red-500'
-						}
-				>
+				{change !== null && (
+						<span
+								className={
+									change > 0 ? 'text-green-500' : 'text-red-500'
+								}
+						>
 					{change ? `${change}%` : ''}
 				</span>
+				)}
 			</div>
 	);
 }
