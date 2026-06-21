@@ -1,13 +1,13 @@
 'use client';
 
-import {useLanguage} from "@/src/i18n/language-context";
+import {useLocale} from '@/src/lib/i18n/LocaleProvider';
 
 export default function LanguageSwitcher() {
-	const {lang, setLang} = useLanguage();
+	const {locale, setLocale} = useLocale();
 
 	return (
 			<button
-					onClick={() => setLang(lang === 'en' ? 'fa' : 'en')}
+					onClick={() => setLocale(locale === 'en' ? 'fa' : 'en')}
 					className="
 				px-3 py-1 rounded-full border
 				border-[var(--border)]
@@ -17,7 +17,7 @@ export default function LanguageSwitcher() {
 				cursor-pointer
 			"
 			>
-				{lang === 'en' ? 'فا' : 'EN'}
+				{locale === 'en' ? 'پارسی' : 'EN'}
 			</button>
 	);
 }
