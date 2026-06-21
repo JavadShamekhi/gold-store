@@ -6,4 +6,5 @@ export type Product = {
 	image: string;
 	category: string;
 	weight: number;
+	stock: number;
 };
