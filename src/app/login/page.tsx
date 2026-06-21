@@ -16,23 +16,23 @@ import {
 } from '@/src/components/ui/form';
 import {Input} from '@/src/components/ui/input';
 import {Button} from '@/src/components/ui/button';
-import {useT} from "@/src/i18n/use-t";
+import {useLocale} from '@/src/lib/i18n/LocaleProvider';
 import {useAuthStore} from "@/src/store/auth-store";
 import {tokenStorage} from "@/src/auth/token-storage";
-
-const schema = z.object({
-	email: z.string().email('Invalid email'),
-	password: z.string().min(6, 'Min 6 characters'),
-});
-
-type FormValues = z.infer<typeof schema>;
 
 export default function LoginPage() {
 	const router = useRouter();
 	const login = useAuthStore((state) => state.login);
 	const [loading, setLoading] = useState(false);
 	const [errorShake, setErrorShake] = useState(false);
-	const t = useT();
+	const {dict} = useLocale();
+
+	const schema = z.object({
+		email: z.string().email(dict?.login.invalidEmail ?? 'Invalid email'),
+		password: z.string().min(6, dict?.login.minPassword ?? 'Min 6 characters'),
+	});
+
+	type FormValues = z.infer<typeof schema>;
 
 	const form = useForm<FormValues>({
 		resolver: zodResolver(schema),
@@ -46,6 +46,8 @@ export default function LoginPage() {
 		form.setFocus('email');
 	}, []);
 
+	if (!dict) return null;
+
 	const onSubmit = async (values: FormValues) => {
 		try {
 			setLoading(true);
@@ -58,11 +60,11 @@ export default function LoginPage() {
 			const data = await res.json();
 
 			if (!res.ok) {
-				throw new Error(data.message || 'Login failed');
+				throw new Error(data.message || dict.login.loginFailed);
 			}
 			tokenStorage.set(data.token);
 			login(data?.user);
-			toast.success('Welcome back!');
+			toast.success(dict.login.welcomeBack);
 			router.refresh();
 			if (data?.user?.role === 'ADMIN') {
 				router.push('/admin');
@@ -74,7 +76,7 @@ export default function LoginPage() {
 			setTimeout(() => setErrorShake(false), 500);
 
 			toast.error(
-					err instanceof Error ? err.message : 'Login failed'
+					err instanceof Error ? err.message : dict.login.loginFailed
 			);
 		} finally {
 			setLoading(false);
@@ -115,7 +117,7 @@ export default function LoginPage() {
 					</h1>
 
 					<p className="text-center text-[var(--foreground)]/60 mt-2 mb-8">
-						{t('login')}
+						{dict.login.title}
 					</p>
 
 					<Form {...form}>
@@ -127,7 +129,7 @@ export default function LoginPage() {
 									name="email"
 									render={({field}) => (
 											<FormItem>
-												<FormLabel>{t('email')}</FormLabel>
+												<FormLabel>{dict.login.email}</FormLabel>
 												<FormControl>
 													<Input
 															{...field}
@@ -151,7 +153,7 @@ export default function LoginPage() {
 									name="password"
 									render={({field}) => (
 											<FormItem>
-												<FormLabel>{t('password')}</FormLabel>
+												<FormLabel>{dict.login.password}</FormLabel>
 												<FormControl>
 													<Input
 															type="password"
@@ -185,7 +187,7 @@ export default function LoginPage() {
 								cursor-pointer
 							"
 							>
-								{loading ? 'Authenticating...' : 'Enter Dashboard'}
+								{loading ? dict.login.authenticating : dict.login.enterDashboard}
 							</Button>
 
 						</form>

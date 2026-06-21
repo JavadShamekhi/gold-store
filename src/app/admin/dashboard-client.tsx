@@ -10,7 +10,7 @@ import {
 	ArrowRight,
 	Boxes,
 } from 'lucide-react';
-import { useT } from '@/src/i18n/use-t';
+import {useLocale} from '@/src/lib/i18n/LocaleProvider';
 
 interface DashboardProps {
 	stats: {
@@ -23,15 +23,20 @@ interface DashboardProps {
 export default function AdminDashboardClient({
 	                                             stats,
                                              }: DashboardProps) {
-	const t = useT();
+	const {dict} = useLocale();
+
+	if (!dict) return null;
+
+	const t = dict.admin;
 
 	return (
 			<div className="space-y-10">
 
 				{/* HERO */}
-				<div className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 md:p-10">
+				<div
+						className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 md:p-10">
 
-					<div className="absolute top-0 right-0 w-72 h-72 bg-[var(--primary)]/10 blur-3xl rounded-full" />
+					<div className="absolute top-0 right-0 w-72 h-72 bg-[var(--primary)]/10 blur-3xl rounded-full"/>
 
 					<div className="relative z-10">
 						<p className="text-sm uppercase tracking-[4px] text-[var(--primary)]">
@@ -39,12 +44,11 @@ export default function AdminDashboardClient({
 						</p>
 
 						<h1 suppressHydrationWarning className="mt-4 text-4xl md:text-5xl font-bold">
-							{t('dashboard') || 'Dashboard'}
+							{t.dashboard}
 						</h1>
 
 						<p className="mt-4 max-w-2xl text-[var(--foreground)]/60">
-							{t('storeOverview') ||
-									'Manage products, orders and customers from one place.'}
+							{t.storeOverview}
 						</p>
 					</div>
 				</div>
@@ -53,31 +57,31 @@ export default function AdminDashboardClient({
 				<div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
 
 					<StatCard
-							title={t('products') || 'Products'}
+							title={t.products}
 							value={stats.products}
-							description="Available items"
-							icon={<Package size={24} />}
+							description={t.availableItems}
+							icon={<Package size={24}/>}
 					/>
 
 					<StatCard
-							title={t('orders') || 'Orders'}
+							title={t.orders}
 							value={stats.orders}
-							description="Customer purchases"
-							icon={<ShoppingCart size={24} />}
+							description={t.customerPurchases}
+							icon={<ShoppingCart size={24}/>}
 					/>
 
 					<StatCard
-							title={t('users') || 'Users'}
+							title={t.users}
 							value={stats.users}
-							description="Registered customers"
-							icon={<Users size={24} />}
+							description={t.registeredCustomers}
+							icon={<Users size={24}/>}
 					/>
 
 					<StatCard
-							title={t('growth') || 'Growth'}
+							title={t.growth}
 							value="+12%"
-							description="This month"
-							icon={<TrendingUp size={24} />}
+							description={t.thisMonth}
+							icon={<TrendingUp size={24}/>}
 					/>
 
 				</div>
@@ -89,7 +93,7 @@ export default function AdminDashboardClient({
 					<div className="xl:col-span-2 rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8">
 
 						<h2 className="text-2xl font-bold mb-6">
-							{t('quickActions') || 'Quick Actions'}
+							{t.quickActions}
 						</h2>
 
 						<div className="grid md:grid-cols-3 gap-4">
@@ -98,14 +102,14 @@ export default function AdminDashboardClient({
 									href="/admin/products/new"
 									className="group rounded-2xl border border-[var(--border)] bg-[var(--background)] p-5 hover:border-[var(--primary)] transition"
 							>
-								<Plus className="text-[var(--primary)] mb-4" />
+								<Plus className="text-[var(--primary)] mb-4"/>
 
 								<h3 className="font-semibold">
-									{t('addProduct') || 'Add Product'}
+									{t.addProduct}
 								</h3>
 
 								<p className="text-sm text-[var(--foreground)]/50 mt-2">
-									Create a new product
+									{t.createNewProduct}
 								</p>
 							</Link>
 
@@ -113,14 +117,14 @@ export default function AdminDashboardClient({
 									href="/admin/products"
 									className="group rounded-2xl border border-[var(--border)] bg-[var(--background)] p-5 hover:border-[var(--primary)] transition"
 							>
-								<Boxes className="text-[var(--primary)] mb-4" />
+								<Boxes className="text-[var(--primary)] mb-4"/>
 
 								<h3 className="font-semibold">
-									{t('manageProducts') || 'Manage Products'}
+									{t.manageProducts}
 								</h3>
 
 								<p className="text-sm text-[var(--foreground)]/50 mt-2">
-									Edit and remove products
+									{t.editAndRemoveProducts}
 								</p>
 							</Link>
 
@@ -128,14 +132,14 @@ export default function AdminDashboardClient({
 									href="/admin/orders"
 									className="group rounded-2xl border border-[var(--border)] bg-[var(--background)] p-5 hover:border-[var(--primary)] transition"
 							>
-								<ShoppingCart className="text-[var(--primary)] mb-4" />
+								<ShoppingCart className="text-[var(--primary)] mb-4"/>
 
 								<h3 className="font-semibold">
-									{t('viewOrders') || 'View Orders'}
+									{t.viewOrders}
 								</h3>
 
 								<p className="text-sm text-[var(--foreground)]/50 mt-2">
-									Check customer orders
+									{t.checkCustomerOrders}
 								</p>
 							</Link>
 
@@ -146,41 +150,41 @@ export default function AdminDashboardClient({
 					<div className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8">
 
 						<h2 className="text-2xl font-bold mb-6">
-							Store Status
+							{t.storeStatus}
 						</h2>
 
 						<div className="space-y-6">
 
 							<div>
 								<div className="flex justify-between mb-2 text-sm">
-									<span>Products</span>
+									<span>{t.products}</span>
 									<span>{stats.products}</span>
 								</div>
 
 								<div className="h-2 rounded-full bg-[var(--background)]">
-									<div className="h-2 w-[75%] rounded-full bg-[var(--primary)]" />
+									<div className="h-2 w-[75%] rounded-full bg-[var(--primary)]"/>
 								</div>
 							</div>
 
 							<div>
 								<div className="flex justify-between mb-2 text-sm">
-									<span>Orders</span>
+									<span>{t.orders}</span>
 									<span>{stats.orders}</span>
 								</div>
 
 								<div className="h-2 rounded-full bg-[var(--background)]">
-									<div className="h-2 w-[55%] rounded-full bg-[var(--primary)]" />
+									<div className="h-2 w-[55%] rounded-full bg-[var(--primary)]"/>
 								</div>
 							</div>
 
 							<div>
 								<div className="flex justify-between mb-2 text-sm">
-									<span>Users</span>
+									<span>{t.users}</span>
 									<span>{stats.users}</span>
 								</div>
 
 								<div className="h-2 rounded-full bg-[var(--background)]">
-									<div className="h-2 w-[85%] rounded-full bg-[var(--primary)]" />
+									<div className="h-2 w-[85%] rounded-full bg-[var(--primary)]"/>
 								</div>
 							</div>
 
@@ -190,8 +194,8 @@ export default function AdminDashboardClient({
 								href="/admin/products"
 								className="mt-8 inline-flex items-center gap-2 text-[var(--primary)] font-medium"
 						>
-							View Details
-							<ArrowRight size={16} />
+							{t.viewDetails}
+							<ArrowRight size={16}/>
 						</Link>
 					</div>
 
@@ -213,13 +217,15 @@ function StatCard({
 	icon: React.ReactNode;
 }) {
 	return (
-			<div className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 hover:border-[var(--primary)]/40 transition-all duration-300">
+			<div
+					className="relative overflow-hidden rounded-3xl border border-[var(--border)] bg-[var(--card)] p-6 hover:border-[var(--primary)]/40 transition-all duration-300">
 
-				<div className="absolute top-0 right-0 w-24 h-24 bg-[var(--primary)]/5 blur-2xl rounded-full" />
+				<div className="absolute top-0 right-0 w-24 h-24 bg-[var(--primary)]/5 blur-2xl rounded-full"/>
 
 				<div className="relative z-10">
 
-					<div className="w-12 h-12 rounded-2xl bg-[var(--background)] border border-[var(--border)] flex items-center justify-center text-[var(--primary)]">
+					<div
+							className="w-12 h-12 rounded-2xl bg-[var(--background)] border border-[var(--border)] flex items-center justify-center text-[var(--primary)]">
 						{icon}
 					</div>
 

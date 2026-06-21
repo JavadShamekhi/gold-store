@@ -6,7 +6,7 @@ export const maxDuration = 30;
 
 export async function GET(request: Request) {
 	// Protect the cron endpoint
-	const authHeader = request.headers.get('authorization');
+	const authHeader = request.headers.get('Authorization');
 	if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
 		return Response.json({ error: 'Unauthorized' }, { status: 401 });
 	}
