@@ -6,7 +6,7 @@ import {toast} from "sonner";
 import Navbar from '@/src/components/layout/navbar';
 import Container from '@/src/components/layout/container';
 import {useCartStore} from '@/src/store/cart-store';
-import {useT} from "@/src/i18n/use-t";
+import {useLocale} from "@/src/lib/i18n/LocaleProvider";
 
 export default function CartPage() {
 	const {
@@ -18,7 +18,7 @@ export default function CartPage() {
 	} = useCartStore();
 
 	const router = useRouter();
-	const t = useT();
+	const {dict} = useLocale();
 	const totalPrice = items.reduce(
 			(acc, item) => acc + item.price * item.quantity,
 			0
@@ -43,7 +43,7 @@ export default function CartPage() {
 
 			if (!response.ok) {
 				throw new Error(
-						data.message || 'Checkout failed'
+						data.message || dict?.cart.checkoutFailed
 				);
 			}
 
@@ -56,10 +56,12 @@ export default function CartPage() {
 			toast.error(
 					error instanceof Error
 							? error.message
-							: 'Checkout failed'
+							: dict?.cart.checkoutFailed
 			);
 		}
 	};
+
+	if (!dict) return null;
 
 	return (
 			<main className="bg-[var(--background)] text-[var(--foreground)]">
@@ -68,12 +70,12 @@ export default function CartPage() {
 				<Container>
 					<div className="py-20">
 						<h1 className="text-5xl font-bold mb-12">
-							{t('shoppingCart')}
+							{dict.cart.shoppingCart}
 						</h1>
 
 						{items.length === 0 ? (
 								<p className="text-[var(--foreground)]/60">
-									{t('emptyCart')}
+									{dict.cart.emptyCart}
 								</p>
 						) : (
 								<div className="space-y-6">
@@ -133,14 +135,14 @@ export default function CartPage() {
 														}
 														className="text-red-400 hover:text-red-500 transition cursor-pointer"
 												>
-													{t('delete')}
+													{dict.cart.remove}
 												</button>
 											</div>
 									))}
 
 									<div className="flex justify-between items-center mt-12">
 										<h2 className="text-3xl font-bold">
-											{t('total')}:
+											{dict.cart.total}:
 										</h2>
 
 										<p className="text-4xl font-bold text-[var(--primary)]">
@@ -152,7 +154,7 @@ export default function CartPage() {
 											onClick={handleCheckout}
 											className="w-full mt-8 bg-[var(--primary)] text-[var(--primary-foreground)] py-4 rounded-full font-semibold hover:opacity-90 transition cursor-pointer"
 									>
-										{t('checkout')}
+										{dict.cart.checkout}
 									</button>
 
 

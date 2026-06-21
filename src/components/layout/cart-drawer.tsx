@@ -4,18 +4,14 @@ import {useState, useEffect} from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import {ShoppingCart, X} from 'lucide-react';
-
 import {useCartStore} from '@/src/store/cart-store';
-import {useT} from '@/src/i18n/use-t';
-import {useLanguage} from '@/src/i18n/language-context';
-import {rtl} from '@/src/lib/dir/rtl';
+import {useLocale} from "@/src/lib/i18n/LocaleProvider";
 
 const CartDrawer = () => {
 	const [isOpen, setIsOpen] = useState(false);
 	const items = useCartStore((state) => state.items);
-	const t = useT();
-	const {lang} = useLanguage();
-	const isRTL = lang === 'fa';
+	const {locale, dict} = useLocale();
+	const isRTL = locale === 'fa';
 
 	const totalPrice = items.reduce(
 			(acc, item) => acc + item.price * item.quantity,
@@ -36,6 +32,8 @@ const CartDrawer = () => {
 		window.addEventListener('keydown', handleEsc);
 		return () => window.removeEventListener('keydown', handleEsc);
 	}, []);
+
+	if (!dict) return null;
 
 	const drawerPosition = isOpen
 			? 'translate-x-0'
@@ -82,7 +80,7 @@ const CartDrawer = () => {
 					transform
 					${isOpen ? 'transition-transform duration-500 ease-in-out' : ''}
 					${drawerPosition}
-					${rtl('border-l', 'border-r')}
+					${isRTL ? 'border-l' : 'border-r'}
 				`}
 				>
 					{/* CLOSE BUTTON */}
@@ -90,7 +88,7 @@ const CartDrawer = () => {
 							onClick={() => setIsOpen(false)}
 							className={`
 						absolute top-5
-						${rtl('right-5', 'left-5')}
+						${isRTL ? 'right-5' : 'left-5'}
 						p-2 rounded-full hover:bg-white/10 transition cursor-pointer
 					`}
 					>
@@ -101,23 +99,23 @@ const CartDrawer = () => {
 					<div
 							className={`
 						h-full flex flex-col p-8
-						${rtl('text-left', 'text-right')}
+						${isRTL ? 'text-left' : 'text-right'}
 					`}
 					>
 						<h2 className="text-2xl font-bold text-[var(--foreground)] mb-10">
-							{t('shoppingCart')}
+							{dict.cart.shoppingCart}
 						</h2>
 
 						{/* ITEMS */}
 						<div
 								className={`
 							flex-1 overflow-y-auto custom-scrollbar
-							${rtl('pr-2', 'pl-2')}
+							${isRTL ? 'pr-2' : 'pl-2'}
 						`}
 						>
 							{items.length === 0 ? (
 									<p className="text-[var(--foreground)]/60">
-										{t('emptyCart')}
+										{dict.cart.emptyCart}
 									</p>
 							) : (
 									<div className="flex flex-col gap-6">
@@ -149,7 +147,7 @@ const CartDrawer = () => {
 														</p>
 
 														<p className="text-sm text-[var(--foreground)]/60 mt-1">
-															{t('quantity')}: {item.quantity}
+															{dict.cart.quantity}: {item.quantity}
 														</p>
 													</div>
 												</div>
@@ -164,11 +162,11 @@ const CartDrawer = () => {
 									<div
 											className={`
 									flex items-center justify-between mb-6
-									${rtl('', 'flex-row-reverse')}
+									${isRTL ? '' : 'flex-row-reverse'}
 								`}
 									>
 								<span className="text-xl font-semibold">
-									{t('total')}
+									{dict.cart.total}
 								</span>
 
 										<span className="text-2xl font-bold text-[var(--primary)]">
@@ -182,7 +180,7 @@ const CartDrawer = () => {
 												onClick={() => setIsOpen(false)}
 												className="block px-8 py-3 rounded-full bg-[var(--primary)] text-black font-semibold hover:opacity-90 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 										>
-											{t('goToCart')}
+											{dict.cart.goToCart}
 										</Link>
 									</div>
 								</div>

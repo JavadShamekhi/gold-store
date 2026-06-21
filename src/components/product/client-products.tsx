@@ -6,6 +6,7 @@ import type {Product} from '@prisma/client';
 
 import Container from '@/src/components/layout/container';
 import ProductCard from '@/src/components/product/product-card';
+import {useLocale} from "@/src/lib/i18n/LocaleProvider";
 
 type Props = {
 	products: Product[];
@@ -16,14 +17,7 @@ export default function ClientProducts({
                                        }: Props) {
 	const [search, setSearch] = useState('');
 	const [category, setCategory] = useState('All');
-
-	const categories = [
-		'All',
-		'Ring',
-		'Necklace',
-		'Bracelet',
-		'Earrings',
-	];
+	const {dict} = useLocale();
 
 	const filteredProducts = useMemo(() => {
 		return products.filter((product) => {
@@ -36,12 +30,21 @@ export default function ClientProducts({
 							? true
 							: product.category === category;
 
-			return (
-					matchesSearch &&
-					matchesCategory
-			);
+			return matchesSearch && matchesCategory;
 		});
 	}, [products, search, category]);
+
+	if (!dict) return null;
+
+	const t = dict.product.productList;
+
+	const categories = [
+		{key: 'All', label: t.categories.all},
+		{key: 'Ring', label: t.categories.ring},
+		{key: 'Necklace', label: t.categories.necklace},
+		{key: 'Bracelet', label: t.categories.bracelet},
+		{key: 'Earrings', label: t.categories.earrings},
+	];
 
 	return (
 			<Container>
@@ -49,11 +52,11 @@ export default function ClientProducts({
 					<div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-12">
 						<div>
 							<p className="text-[var(--primary)] uppercase tracking-[4px] text-sm">
-								Collection
+								{t.subtitle}
 							</p>
 
 							<h1 className="text-5xl font-bold mt-3 text-[var(--foreground)]">
-								All Products
+								{t.title}
 							</h1>
 						</div>
 
@@ -64,7 +67,7 @@ export default function ClientProducts({
 									onChange={(e) =>
 											setSearch(e.target.value)
 									}
-									placeholder="Search jewelery..."
+									placeholder={t.searchPlaceholder}
 									className="bg-[var(--card)]	text-[var(--card-foreground)]	border border-[var(--border)] rounded-full px-5 py-3 outline-none	transition focus:border-[var(--primary)]"
 							/>
 
@@ -77,10 +80,10 @@ export default function ClientProducts({
 							>
 								{categories.map((item) => (
 										<option
-												key={item}
-												value={item}
+												key={item.key}
+												value={item.key}
 										>
-											{item}
+											{item.label}
 										</option>
 								))}
 							</select>
@@ -90,7 +93,7 @@ export default function ClientProducts({
 					{filteredProducts.length === 0 ? (
 							<div className="h-[40vh] flex items-center justify-center">
 								<p className="text-[var(--foreground)]/50 text-xl">
-									No products found.
+									{t.noProducts}
 								</p>
 							</div>
 					) : (

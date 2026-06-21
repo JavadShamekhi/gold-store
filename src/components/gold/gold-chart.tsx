@@ -10,7 +10,7 @@ import {
 	Tooltip,
 	ResponsiveContainer,
 } from 'recharts';
-import {useLanguage} from '@/src/i18n/language-context';
+import {useLanguage} from '@/src/lib/i18n/language-context';
 import {TrendingUp, Activity} from 'lucide-react';
 
 interface HistoryItem {

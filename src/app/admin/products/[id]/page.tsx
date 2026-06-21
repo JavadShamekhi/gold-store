@@ -1,6 +1,6 @@
 import {notFound} from 'next/navigation';
 import {prisma} from '@/src/lib/prisma';
-import ProductForm from "@/src/app/admin/products/product-form";
+import ProductForm from "@/src/components/product/product-form";
 
 type Props = {
 	params: Promise<{
