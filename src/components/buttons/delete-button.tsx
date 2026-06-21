@@ -13,6 +13,7 @@ import {
 	AlertDialogTitle,
 	AlertDialogTrigger,
 } from '@/src/components/ui/alert-dialog';
+import {useLocale} from "@/src/lib/i18n/LocaleProvider";
 
 export default function DeleteButton({
 	                                     id,
@@ -20,6 +21,11 @@ export default function DeleteButton({
 	id: string;
 }) {
 	const router = useRouter();
+	const { dict } = useLocale();
+
+	if (!dict) return null;
+
+	const t = dict.product.deleteButton;
 
 	const handleDelete = async () => {
 		try {
@@ -28,13 +34,14 @@ export default function DeleteButton({
 			});
 
 			if (!res.ok) {
-				throw new Error('Delete failed');
+				throw new Error(t.errorGeneric);
 			}
 
-			toast.success('Product deleted successfully');
+			toast.success(t.success);
 			router.refresh();
-		} catch {
-			toast.error('Failed to delete product');
+		} catch(error) {
+			console.log(error)
+			toast.error(t.error);
 		}
 	};
 
@@ -44,32 +51,31 @@ export default function DeleteButton({
 					<button
 							className="px-4 py-2 border border-[var(--border)]	bg-[var(--background)] rounded-full hover:border-red-500 hover:text-red-400 transition cursor-pointer"
 					>
-						Delete
+						{t.trigger}
 					</button>
 				</AlertDialogTrigger>
 
 				<AlertDialogContent className="bg-[var(--card)] text-[var(--card-foreground)] border border-[var(--border)] rounded-2xl">
 					<AlertDialogHeader>
 						<AlertDialogTitle className="text-lg font-semibold">
-							Are you absolutely sure?
+							{t.confirmTitle}
 						</AlertDialogTitle>
 
 						<AlertDialogDescription className="text-sm text-muted-foreground">
-							This action cannot be undone. This will permanently
-							delete this product from your database.
+							{t.confirmDescription}
 						</AlertDialogDescription>
 					</AlertDialogHeader>
 
 					<AlertDialogFooter>
-						<AlertDialogCancel className="bg-transparent border border-[var(--border)] text-[var(--foreground)] rounded-full hover:bg-[var(--secondary)]">
-							Cancel
+						<AlertDialogCancel className="bg-transparent border border-[var(--border)] text-[var(--foreground)] rounded-full hover:bg-[var(--secondary)] cursor-pointer">
+							{t.cancel}
 						</AlertDialogCancel>
 
 						<AlertDialogAction
 								onClick={handleDelete}
-								className="bg-red-500 text-white rounded-full hover:bg-red-600"
+								className="bg-red-500 text-white rounded-full hover:bg-red-600 cursor-pointer"
 						>
-							Delete
+							{t.action}
 						</AlertDialogAction>
 					</AlertDialogFooter>
 				</AlertDialogContent>
