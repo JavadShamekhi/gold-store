@@ -3,7 +3,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import {Product} from "@/src/types/product";
-
 import { toast} from "sonner";
 import { useCartStore} from "@/src/store/cart-store";
 

@@ -2,8 +2,9 @@
 
 import {useRouter} from 'next/navigation';
 import {useState} from 'react';
-import {useT} from '@/src/i18n/use-t';
 import {ProductFormValues} from '@/src/lib/validations/product-schema';
+import {useLocale} from "@/src/lib/i18n/LocaleProvider";
+import {toast} from "sonner";
 
 type Props = {
 	initialData?: ProductFormValues & { id?: string };
@@ -11,13 +12,12 @@ type Props = {
 
 export default function ProductForm({initialData}: Props) {
 	const router = useRouter();
-	const t = useT();
+	const {dict} = useLocale();
 	const isEdit = !!initialData?.id;
-
 	const [loading, setLoading] = useState(false);
 	const [image, setImage] = useState(initialData?.image || '');
 	const [preview, setPreview] = useState(initialData?.image || '');
-
+	const t = dict?.product.productForm;
 	const removeImage = () => {
 		setImage('');
 		setPreview('');
@@ -62,16 +62,19 @@ export default function ProductForm({initialData}: Props) {
 					}
 			);
 
-			if (!res.ok) throw new Error('Failed');
+			if (!res.ok) throw new Error(t?.errorFailed);
 
 			router.push('/admin/products');
 			router.refresh();
 		} catch (err) {
-			console.error(err);
+			console.error("Submission Error:", err);
+			toast.error(t?.errorSomethingWentWrong);
 		} finally {
 			setLoading(false);
 		}
 	}
+
+	if (!dict) return null;
 
 	return (
 			<div className="min-h-screen flex items-center justify-center px-4 bg-[var(--background)]">
@@ -82,14 +85,14 @@ export default function ProductForm({initialData}: Props) {
 					{/* HEADER */}
 					<div className="text-center mb-10">
 						<p className="text-[var(--primary)] mb-2 uppercase tracking-[4px] text-sm">
-							{t('admin')}
+							{t?.admin}
 						</p>
 						<h1 className="text-3xl font-bold text-[var(--foreground)]">
-							{isEdit ? t('edit') : t('addProduct')}
+							{isEdit ? t?.edit : t?.addProduct}
 						</h1>
 
 						<p className="mt-2 text-sm text-[var(--foreground)]/60">
-							{isEdit ? t('updateProductDetails') : t('addNewJewellery')}
+							{isEdit ? t?.updateProductDetails : t?.addNewJewellery}
 						</p>
 
 						<div className="mt-4 w-20 h-[2px] bg-[var(--primary)] mx-auto rounded-full"/>
@@ -99,7 +102,7 @@ export default function ProductForm({initialData}: Props) {
 
 						{/* TITLE */}
 						<div>
-							<label className="text-sm text-[var(--foreground)]/70">{t('title')}</label>
+							<label className="text-sm text-[var(--foreground)]/70">{t?.title}</label>
 							<input
 									name="title"
 									defaultValue={initialData?.title}
@@ -109,7 +112,7 @@ export default function ProductForm({initialData}: Props) {
 
 						{/* DESCRIPTION */}
 						<div>
-							<label className="text-sm text-[var(--foreground)]/70">{t('description')}</label>
+							<label className="text-sm text-[var(--foreground)]/70">{t?.description}</label>
 							<textarea
 									name="description"
 									defaultValue={initialData?.description}
@@ -120,7 +123,7 @@ export default function ProductForm({initialData}: Props) {
 
 						{/* CATEGORY */}
 						<div>
-							<label className="text-sm text-[var(--foreground)]/70">{t('category')}</label>
+							<label className="text-sm text-[var(--foreground)]/70">{t?.category}</label>
 							<input
 									name="category"
 									defaultValue={initialData?.category}
@@ -131,7 +134,7 @@ export default function ProductForm({initialData}: Props) {
 						{/* IMAGE UPLOAD */}
 						<div className="space-y-3">
 							<label className="text-sm ml-2 mr-2 text-[var(--foreground)]/70">
-								{t('image') || 'Image'}
+								{t?.image}
 							</label>
 
 							<label
@@ -149,7 +152,7 @@ export default function ProductForm({initialData}: Props) {
 			w-fit
 		"
 							>
-								📁 {t('chooseImg')}
+								📁 {t?.chooseImg}
 								<input
 										type="file"
 										accept="image/*"
@@ -236,7 +239,7 @@ export default function ProductForm({initialData}: Props) {
 					transition
 				"
 										>
-											{t('preview') || 'Preview'}
+											{t?.preview}
 										</div>
 									</div>
 							)}
@@ -248,7 +251,7 @@ export default function ProductForm({initialData}: Props) {
 									name="price"
 									type="number"
 									defaultValue={initialData?.price}
-									placeholder={t('price')}
+									placeholder={t?.price}
 									className="px-4 py-3 rounded-xl bg-[var(--background)] border border-[var(--border)] focus:border-[var(--primary)] outline-none"
 							/>
 
@@ -256,7 +259,7 @@ export default function ProductForm({initialData}: Props) {
 									name="weight"
 									type="number"
 									defaultValue={initialData?.weight}
-									placeholder={t('weight')}
+									placeholder={t?.weight}
 									className="px-4 py-3 rounded-xl bg-[var(--background)] border border-[var(--border)] focus:border-[var(--primary)] outline-none"
 							/>
 
@@ -264,7 +267,7 @@ export default function ProductForm({initialData}: Props) {
 									name="stock"
 									type="number"
 									defaultValue={initialData?.stock}
-									placeholder={t('stock')}
+									placeholder={t?.stock}
 									className="px-4 py-3 rounded-xl bg-[var(--background)] border border-[var(--border)] focus:border-[var(--primary)] outline-none"
 							/>
 						</div>
@@ -276,11 +279,7 @@ export default function ProductForm({initialData}: Props) {
 									disabled={loading}
 									className="px-8 py-3 rounded-full bg-[var(--primary)] text-black font-semibold hover:opacity-90 transition cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
 							>
-								{loading
-										? t('authenticating')
-										: isEdit
-												? t('edit')
-												: t('addProduct')}
+								{loading ? t?.saving : (isEdit ? t?.edit : t?.addProduct)}
 							</button>
 						</div>
 
