@@ -1,8 +1,122 @@
 {
+  "metadata": {
+    "title": "گالری طلای زرین",
+    "description": "پلتفرم خرید آنلاین جواهرات لوکس"
+  },
   "navbar": {
     "home": "خانه",
     "products": "محصولات",
     "about": "درباره ما",
     "contact": "تماس با ما"
+  },
+  "cart": {
+    "shoppingCart": "سبد خرید",
+    "emptyCart": "سبد خرید شما خالی است",
+    "quantity": "تعداد",
+    "total": "جمع کل",
+    "goToCart": "رفتن به سبد خرید",
+    "remove": "حذف",
+    "checkout": "پرداخت",
+    "checkoutFailed": "پرداخت ناموفق بود",
+    "addToCart": "اضافه کردن به سبد خرید"
+  },
+  "login": {
+    "title": "ورود",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "invalidEmail": "ایمیل نامعتبر است",
+    "minPassword": "حداقل ۶ کاراکتر",
+    "welcomeBack": "خوش آمدید!",
+    "loginFailed": "ورود ناموفق بود",
+    "authenticating": "در حال ورود...",
+    "enterDashboard": "ورود به پنل"
+  },
+  "admin": {
+    "dashboard": "داشبورد",
+    "storeOverview": "محصولات، سفارش‌ها و مشتریان را از یک مکان مدیریت کنید.",
+    "products": "محصولات",
+    "orders": "سفارش‌ها",
+    "users": "کاربران",
+    "growth": "رشد",
+    "availableItems": "اقلام موجود",
+    "customerPurchases": "خریدهای مشتریان",
+    "registeredCustomers": "مشتریان ثبت‌شده",
+    "thisMonth": "این ماه",
+    "quickActions": "دسترسی سریع",
+    "addProduct": "افزودن محصول",
+    "createNewProduct": "ساخت محصول جدید",
+    "manageProducts": "مدیریت محصولات",
+    "editAndRemoveProducts": "ویرایش و حذف محصولات",
+    "viewOrders": "مشاهده سفارش‌ها",
+    "checkCustomerOrders": "بررسی سفارش‌های مشتریان",
+    "storeStatus": "وضعیت فروشگاه",
+    "viewDetails": "مشاهده جزئیات"
+  },
+  "product": {
+    "productForm": {
+      "admin": "پنل مدیریت",
+      "edit": "ویرایش محصول",
+      "addProduct": "افزودن محصول جدید",
+      "updateProductDetails": "جزئیات جواهر خود را ویرایش کنید",
+      "addNewJewellery": "یک قطعه جواهر جدید به مجموعه اضافه کنید",
+      "title": "عنوان",
+      "description": "توضیحات",
+      "category": "دسته‌بندی",
+      "image": "تصویر محصول",
+      "chooseImg": "انتخاب تصویر",
+      "preview": "پیش‌نمایش",
+      "price": "قیمت",
+      "weight": "وزن (گرم)",
+      "stock": "موجودی",
+      "saving": "در حال پردازش...",
+      "errorFailed": "خطا در ذخیره محصول",
+      "errorSomethingWentWrong": "مشکلی پیش آمده است. لطفا دوباره تلاش کنید."
+    },
+    "adminList": {
+      "managementTitle": "مدیریت محصولات",
+      "addProduct": "افزودن محصول",
+      "edit": "ویرایش"
+    },
+    "deleteButton": {
+      "trigger": "حذف",
+      "confirmTitle": "آیا کاملاً مطمئن هستید؟",
+      "confirmDescription": "این عمل قابل بازگشت نیست. این کار محصول را برای همیشه از پایگاه داده شما حذف می‌کند.",
+      "cancel": "انصراف",
+      "action": "حذف",
+      "success": "محصول با موفقیت حذف شد",
+      "error": "خطا در حذف محصول",
+      "errorGeneric": "حذف با خطا مواجه شد"
+    },
+    "productList": {
+      "subtitle": "مجموعه",
+      "title": "همه محصولات",
+      "searchPlaceholder": "جستجوی جواهرات...",
+      "noProducts": "محصولی یافت نشد.",
+      "categories": {
+        "all": "همه",
+        "ring": "انگشتر",
+        "necklace": "گردنبند",
+        "bracelet": "دستبند",
+        "earrings": "گوشواره"
+      }
+    },
+    "details": {
+      "weight": "وزن",
+      "stock": "موجودی",
+      "wishlist": "علاقه‌مندی‌ها",
+      "currency": "تومان",
+      "unit": "گرم"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "جواهرات لوکس",
+      "description": "ظرافت بی‌زمان و جواهرات دست‌ساز منحصر‌به‌فرد را که برای تجمل مدرن طراحی شده‌اند، کشف کنید.",
+      "button": "مشاهده مجموعه"
+    },
+    "collection": {
+      "subtitle": "مجموعه محصولات",
+      "title": "محصولات ویژه"
+    }
   }
 }

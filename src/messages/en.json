@@ -1,8 +1,122 @@
 {
+  "metadata": {
+    "title": "Zarrin Gold Store",
+    "description": "Luxury Jewelry E-Commerce Platform"
+  },
   "navbar": {
     "home": "Home",
     "products": "Products",
     "about": "About",
     "contact": "Contact"
+  },
+  "cart": {
+    "shoppingCart": "Shopping Cart",
+    "emptyCart": "Your cart is empty",
+    "quantity": "Quantity",
+    "total": "Total",
+    "goToCart": "Go to Cart",
+    "remove": "Remove",
+    "checkout": "Checkout",
+    "checkoutFailed": "Checkout failed",
+    "addToCart": "Add To Cart"
+  },
+  "login": {
+    "title": "Login",
+    "email": "Email",
+    "password": "Password",
+    "invalidEmail": "Invalid email",
+    "minPassword": "Min 6 characters",
+    "welcomeBack": "Welcome back!",
+    "loginFailed": "Login failed",
+    "authenticating": "Authenticating...",
+    "enterDashboard": "Enter Dashboard"
+  },
+  "admin": {
+    "dashboard": "Dashboard",
+    "storeOverview": "Manage products, orders and customers from one place.",
+    "products": "Products",
+    "orders": "Orders",
+    "users": "Users",
+    "growth": "Growth",
+    "availableItems": "Available items",
+    "customerPurchases": "Customer purchases",
+    "registeredCustomers": "Registered customers",
+    "thisMonth": "This month",
+    "quickActions": "Quick Actions",
+    "addProduct": "Add Product",
+    "createNewProduct": "Create a new product",
+    "manageProducts": "Manage Products",
+    "editAndRemoveProducts": "Edit and remove products",
+    "viewOrders": "View Orders",
+    "checkCustomerOrders": "Check customer orders",
+    "storeStatus": "Store Status",
+    "viewDetails": "View Details"
+  },
+  "product": {
+    "productForm": {
+      "admin": "Admin Panel",
+      "edit": "Edit Product",
+      "addProduct": "Add Product",
+      "updateProductDetails": "Update your jewelry details",
+      "addNewJewellery": "Add a new jewelry piece to your collection",
+      "title": "Title",
+      "description": "Description",
+      "category": "Category",
+      "image": "Product Image",
+      "chooseImg": "Choose Image",
+      "preview": "Preview",
+      "price": "Price",
+      "weight": "Weight (gr)",
+      "stock": "Stock",
+      "saving": "Processing...",
+      "errorFailed": "Failed to save product",
+      "errorSomethingWentWrong": "Something went wrong. Please try again."
+    },
+    "adminList": {
+      "managementTitle": "Products Management",
+      "addProduct": "Add Product",
+      "edit": "Edit"
+    },
+    "deleteButton": {
+      "trigger": "Delete",
+      "confirmTitle": "Are you absolutely sure?",
+      "confirmDescription": "This action cannot be undone. This will permanently delete this product from your database.",
+      "cancel": "Cancel",
+      "action": "Delete",
+      "success": "Product deleted successfully",
+      "error": "Failed to delete product",
+      "errorGeneric": "Delete failed"
+    },
+    "productList": {
+      "subtitle": "Collection",
+      "title": "All Products",
+      "searchPlaceholder": "Search jewelry...",
+      "noProducts": "No products found.",
+      "categories": {
+        "all": "All",
+        "ring": "Ring",
+        "necklace": "Necklace",
+        "bracelet": "Bracelet",
+        "earrings": "Earrings"
+      }
+    },
+    "details": {
+      "weight": "Weight",
+      "stock": "Stock",
+      "wishlist": "Wishlist",
+      "currency": "$",
+      "unit": "g"
+    }
+  },
+  "home": {
+    "hero": {
+      "title": "Luxury Jewelry",
+      "description": "Discover timeless elegance and premium handcrafted jewelry designed for modern luxury.",
+      "button": "Explore Collection"
+    },
+    "collection": {
+      "subtitle": "Collection",
+      "title": "Featured Products"
+    }
   }
 }
