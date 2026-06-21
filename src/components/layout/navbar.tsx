@@ -8,9 +8,9 @@ import {useAuthStore} from "@/src/store/auth-store";
 import ThemeToggle from "@/src/components/theme-toggle";
 import GoldTicker from "@/src/components/gold/gold-ticker";
 import {useEffect, useState, useSyncExternalStore} from "react";
-import LanguageSwitcher from "@/src/components/language-switcher";
-import {useT} from "@/src/i18n/use-t";
 import {useRouter} from "next/navigation";
+import {useLocale} from '@/src/lib/i18n/LocaleProvider';
+import LanguageSwitcher from "@/src/components/language-switcher";
 
 const subscribe = () => () => {
 };
@@ -21,7 +21,7 @@ const Navbar = () => {
 	const {user, logout} = useAuthStore();
 	const [isScrolled, setIsScrolled] = useState(false);
 	const router = useRouter();
-	const t = useT();
+	const {dict} = useLocale();
 
 	// This replaces "mounted" and satisfies ESLint
 	const isClient = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
@@ -71,10 +71,10 @@ const Navbar = () => {
 
 						{/* 2. Center Part (Nav Links) */}
 						<nav className="hidden md:flex items-center justify-center gap-8 text-sm">
-							<Link className="hover:text-[var(--primary)] transition" href="/">{t('home')}</Link>
-							<Link className="hover:text-[var(--primary)] transition" href="/products">{t('products')}</Link>
-							<Link className="hover:text-[var(--primary)] transition" href="/about">{t('about')}</Link>
-							<Link className="hover:text-[var(--primary)] transition" href="/contact">{t('contact')}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/">{dict?.navbar.home}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/products">{dict?.navbar.products}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/about">{dict?.navbar.about}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/contact">{dict?.navbar.contact}</Link>
 						</nav>
 
 						{/* 3. Right Part (User, Darkmode, Cart) */}
