@@ -1,5 +1,5 @@
 import { prisma } from '@/src/lib/prisma';
-import AdminDashboardClient from './dashboard-client';
+import AdminDashboardClient from '../../components/admin/dashboard-client';
 
 export default async function AdminDashboardPage() {
 	// Fetch all stats in parallel for performance
