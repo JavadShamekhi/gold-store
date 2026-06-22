@@ -14,19 +14,6 @@ type Props = {
 export default function HomeClient({products}: Props) {
 	const {dict} = useLocale();
 
-	useEffect(() => {
-		if (dict) {
-			// This updates the tab title in the browser
-			document.title = dict.metadata.title;
-
-			// This updates the meta description for SEO (Client-side only)
-			const metaDesc = document.querySelector('meta[name="description"]');
-			if (metaDesc) {
-				metaDesc.setAttribute('content', dict.metadata.description);
-			}
-		}
-	}, [dict]);
-
 	if (!dict) return null;
 
 	const t = dict?.home;
