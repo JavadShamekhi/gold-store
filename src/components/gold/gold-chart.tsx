@@ -10,8 +10,8 @@ import {
 	Tooltip,
 	ResponsiveContainer,
 } from 'recharts';
-import {useLanguage} from '@/src/lib/i18n/language-context';
 import {TrendingUp, Activity} from 'lucide-react';
+import {useLocale} from "@/src/lib/i18n/LocaleProvider";
 
 interface HistoryItem {
 	price: number;
@@ -21,7 +21,7 @@ interface HistoryItem {
 export default function GoldChart() {
 	const [data, setData] = useState<HistoryItem[]>([]);
 	const [loading, setLoading] = useState(true);
-	const {lang} = useLanguage();
+	const {dict} = useLocale();
 
 	useEffect(() => {
 		const fetchHistory = async () => {
@@ -38,14 +38,16 @@ export default function GoldChart() {
 		fetchHistory();
 	}, []);
 
+	if (!dict) return null;
+
 	// Format price for Y-Axis and Tooltip
 	const formatPrice = (price: number) =>
-			new Intl.NumberFormat(lang === 'fa' ? 'fa-IR' : 'en-US').format(price);
+			new Intl.NumberFormat(dict.language.lng).format(price);
 
 	// Format time for X-Axis
 	const formatXAxis = (tickItem: string) => {
 		const date = new Date(tickItem);
-		return date.toLocaleTimeString(lang === 'fa' ? 'fa-IR' : 'en-US', {
+		return date.toLocaleTimeString(dict.language.lng, {
 			hour: '2-digit',
 			minute: '2-digit',
 		});
@@ -69,10 +71,10 @@ export default function GoldChart() {
 						</div>
 						<div>
 							<h3 className="font-bold text-lg">
-								{lang === 'fa' ? 'نمودار قیمت طلا' : 'Gold Price Chart'}
+								{dict.gold.goldChart.priceChart}
 							</h3>
 							<p className="text-xs text-[var(--foreground)]/50 uppercase tracking-widest">
-								{lang === 'fa' ? 'آخرین نوسانات بازار' : 'Live Market Fluctuations'}
+								{dict.gold.goldChart.fluctuations}
 							</p>
 						</div>
 					</div>
@@ -111,7 +113,7 @@ export default function GoldChart() {
 							/>
 
 							<Tooltip
-									content={<CustomTooltip lang={lang}/>}
+									content={<CustomTooltip dict={dict}/>}
 							/>
 
 							<Area
@@ -131,7 +133,7 @@ export default function GoldChart() {
 }
 
 // Custom Premium Tooltip Component
-const CustomTooltip = ({active, payload, label, lang}: any) => {
+const CustomTooltip = ({active, payload, label, dict}: any) => {
 	if (active && payload && payload.length) {
 		const price = payload[0].value;
 		const date = new Date(label);
@@ -140,7 +142,7 @@ const CustomTooltip = ({active, payload, label, lang}: any) => {
 				<div
 						className="bg-[var(--background)] border border-[var(--primary)]/30 p-4 rounded-2xl shadow-xl backdrop-blur-md">
 					<p className="text-xs text-[var(--foreground)]/50 mb-1">
-						{date.toLocaleDateString(lang === 'fa' ? 'fa-IR' : 'en-US', {
+						{date.toLocaleDateString(dict.language.lng, {
 							month: 'short',
 							day: 'numeric',
 							hour: '2-digit',
