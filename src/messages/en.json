@@ -118,5 +118,14 @@
       "subtitle": "Collection",
       "title": "Featured Products"
     }
+  },
+  "gold": {
+    "goldChart": {
+      "priceChart": "Gold Price Chart",
+      "fluctuations": "Live Market Fluctuations"
+    }
+  },
+  "language": {
+    "lng": "en-US"
   }
 }

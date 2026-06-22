@@ -118,5 +118,14 @@
       "subtitle": "مجموعه محصولات",
       "title": "محصولات ویژه"
     }
+  },
+  "gold": {
+    "goldChart": {
+      "priceChart": "نمودار قیمت طلا",
+      "fluctuations": "آخرین نوسانات بازار"
+    }
+  },
+  "language": {
+    "lng": "fa-IR"
   }
 }
