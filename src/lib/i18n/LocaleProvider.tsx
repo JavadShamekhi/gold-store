@@ -10,6 +10,7 @@ import {
 import {defaultLocale, getDirection, locales, type Locale} from './config';
 import {getDictionary} from './getDictionary';
 import type {Dictionary} from './types';
+import Cookies from 'js-cookie';
 
 const STORAGE_KEY = 'locale';
 
@@ -63,8 +64,13 @@ export function LocaleProvider({
 				.then((nextDict) => {
 					setDict(nextDict);
 					setLocaleState(next);
+					Cookies.set(STORAGE_KEY, next, { expires: 365});
+					applyDomAttributes(next);
 					window.localStorage.setItem(STORAGE_KEY, next);
 					applyDomAttributes(next);
+					if (nextDict.metadata) {
+						document.title = nextDict.metadata.title;
+					}
 				})
 				.finally(() => setIsLoading(false));
 	}
