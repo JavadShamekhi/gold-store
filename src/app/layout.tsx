@@ -3,12 +3,10 @@ import {Inter, Space_Grotesk, Vazirmatn} from 'next/font/google';
 import './globals.css';
 import {Toaster} from "sonner";
 import {ThemeProvider} from "@/src/components/providers/theme-provider";
-import '@fontsource/vazirmatn/400.css';
-import '@fontsource/vazirmatn/500.css';
-import '@fontsource/vazirmatn/700.css';
 import AuthProvider from "@/src/components/providers/auth-provider";
 import {LocaleProvider} from "@/src/lib/i18n/LocaleProvider";
 import {getDictionary} from "@/src/lib/i18n/getDictionary";
+import {cookies} from "next/headers";
 
 const inter = Inter({
 	subsets: ['latin'],
@@ -17,11 +15,17 @@ const inter = Inter({
 const spaceGrotesk = Space_Grotesk({subsets: ['latin'], variable: '--font-space'})
 const vazirmatn = Vazirmatn({subsets: ['arabic'], variable: '--font-vazir'});
 
-export const metadata: Metadata = {
-	title: 'Zarrin Gold Store',
-	description: 'Luxury Jewelry E-Commerce Platform',
-	icons: {
-		icon: '/icon/gold-dollar-coin.png',
+export async function generateMetadata(): Promise<Metadata> {
+	const cookieStore = await cookies();
+	const lang = (cookieStore.get('locale')?.value || 'en') as any;
+	const dict = await getDictionary(lang);
+
+	return {
+		title: dict.metadata.title,
+		description: dict.metadata.description,
+		icons: {
+			icon: '/icon/gold-dollar-coin.png',
+		}
 	}
 };
 
@@ -30,26 +34,13 @@ export default async function RootLayout({
                                          }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	const dict = await getDictionary('en');
+	const cookieStore = await cookies();
+	const lang = (cookieStore.get('locale')?.value || 'en') as any;
+	const dict = await getDictionary(lang);
 
 	return (
-			<html lang='en' dir="ltr" suppressHydrationWarning>
-			<head>
-				{/* Prevents a flash of wrong direction/language before React hydrates */}
-				<script
-						dangerouslySetInnerHTML={{
-							__html: `
-              try {
-                var l = localStorage.getItem('locale');
-                if (l === 'fa') {
-                  document.documentElement.dir = 'rtl';
-                  document.documentElement.lang = 'fa';
-                }
-              } catch (e) {}
-            `,
-						}}
-				/>
-			</head>
+			<html lang={lang} dir={lang === 'fa' ? 'rtl' : 'ltr'} suppressHydrationWarning>
+
 			<body
 					className={`${inter.variable} ${spaceGrotesk.variable} ${vazirmatn.variable} antialiased`}
 			>
@@ -63,6 +54,5 @@ export default async function RootLayout({
 			</LocaleProvider>
 			</body>
 			</html>
-	)
-			;
+	);
 }
