@@ -1,8 +1,16 @@
 @import "tailwindcss";
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+	/* Fonts */
+	--font-inter: "Inter", sans-serif;
+	--font-sans: var(--font-inter);
+	--font-space: var(--font-space);
+	--font-vazir: var(--font-vazir);
+
+}
 
 :root {
-	/* Define font variables */
-	--font-vazir: "Vazirmatn", sans-serif;
 
 	/* LIGHT MODE */
 	--background: #ffffff;
@@ -30,62 +38,37 @@
 }
 
 body {
-	background: var(--background);
-	color: var(--foreground);
 	font-family: var(--font-inter);
-	font-feature-settings: "cv11", "ss01";
-	transition: background-color 0.3s ease, color 0.3s ease;
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	font-size: 18px;
-	line-height: 1.7;
+	@apply transition-colors duration-200;
 }
 
-@theme {
-	--font-en: var(--font-inter), ui-sans-serif, system-ui;
-	--font-fa: var(--font-vazir), ui-sans-serif, system-ui;
-	--animate-duration-slow: 700ms;
-	--ease-gentle: cubic-bezier(0.32, 0.72, 0, 1);
+/* =========================
+   GLOBAL STYLES
+========================= */
+html {
+	scroll-behavior: smooth;
 }
 
-/* 1. When lang is English (default) */
-html[lang="en"] body {
-	font-family: var(--font-inter), var(--font-vazir), sans-serif;
+/* =========================
+   TYPOGRAPHY
+========================= */
+h1, h2, h3, h4, h5, h6 {
+	@apply font-bold;
 }
 
-/* 2. When lang is Persian */
-html[lang="fa"] body {
-	font-family: var(--font-vazir), var(--font-inter), sans-serif;
+/* =========================
+   LINKS
+========================= */
+a {
+	@apply transition-colors duration-200;
 }
 
-/* 3. Handle Headings specifically */
-h1, h2, h3, h4, h5 {
-	/* If it's English, use Playfair. If it's Persian, use Vazirmatn */
-	font-family: var(--font-playfair), var(--font-vazir), serif;
+[dir="rtl"] body {
+	font-family: var(--font-vazir), sans-serif;
 }
 
-html[lang="fa"] h1,
-html[lang="fa"] h2,
-html[lang="fa"] h3,
-html[lang="fa"] h4,
-html[lang="fa"] h5 {
-	font-family: var(--font-vazir), serif;
-}
-
-.font-en {
-	font-family: var(--font-inter);
-	letter-spacing: -0.01em;
-	weight: 800;
-}
-
-.font-fa {
-	font-family: var(--font-vazir);
-	letter-spacing: 0;
-	weight: 400;
-}
-
-h1, h2, h3, h4, h5 {
-	font-weight: 700;
+[dir="ltr"] body {
+	font-family: var(--font-inter), sans-serif;
 }
 
 @keyframes glow {
