@@ -1,4 +1,5 @@
 import {NextResponse} from 'next/server';
+import {AUTH_COOKIE_NAME, getAuthCookieOptions} from "@/src/lib/jwt";
 
 export async function POST() {
 	const response = NextResponse.json({
@@ -7,10 +8,9 @@ export async function POST() {
 
 	// 🧹 Clear cookie
 	response.cookies.set({
-		name: 'token',
+		name: AUTH_COOKIE_NAME,
 		value: '',
-		httpOnly: true,
-		path: '/',
+		...getAuthCookieOptions(),
 		expires: new Date(0), // 👈 instantly delete
 	});
 
