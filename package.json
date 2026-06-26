@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "update-gold-price": "tsx src/scripts/update-gold-price.ts"
   },
   "dependencies": {
     "@fontsource/vazirmatn": "^5.2.8",
