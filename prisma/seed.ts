@@ -63,6 +63,7 @@ async function main() {
 	// =========================
 	const admin1 = await prisma.user.create({
 		data: {
+			name: "Admin One",
 			email: "admin@goldstore.com",
 			password: await bcrypt.hash("123456", 10),
 			role: Role.ADMIN,
@@ -76,6 +77,7 @@ async function main() {
 
 	const admin2 = await prisma.user.create({
 		data: {
+			name: "Admin Two",
 			email: "admin2@goldstore.com",
 			password: await bcrypt.hash("123456", 10),
 			role: Role.ADMIN,
@@ -92,6 +94,7 @@ async function main() {
 	// =========================
 	const user1 = await prisma.user.create({
 		data: {
+			name: "Test User One",
 			email: "user1@test.com",
 			password: await bcrypt.hash("123456", 10),
 			role: Role.CUSTOMER,
@@ -105,6 +108,7 @@ async function main() {
 
 	const user2 = await prisma.user.create({
 		data: {
+			name: "Test User Two",
 			email: "user2@test.com",
 			password: await bcrypt.hash("123456", 10),
 			role: Role.CUSTOMER,
