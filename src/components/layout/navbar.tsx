@@ -97,7 +97,7 @@ const Navbar = () => {
 										</div>
 								) : (
 										<Link
-												href="/login"
+												href="/auth/login"
 												className="hover:text-[var(--primary)] transition"
 										>
 											<User size={isScrolled ? 20 : 22}/>
