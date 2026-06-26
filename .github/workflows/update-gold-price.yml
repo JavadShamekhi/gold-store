@@ -1,0 +1,28 @@
+name: Update Gold Price
+
+on:
+  workflow_dispatch:
+
+  schedule:
+    - cron: "*/5 * * * *"
+
+jobs:
+  update-gold-price:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - run: npx prisma generate
+
+      - run: npm run update-gold-price
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          BRS_API_KEY: ${{ secrets.BRS_API_KEY }}
