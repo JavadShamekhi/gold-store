@@ -43,7 +43,11 @@ async function main() {
 
 		console.log("Inserted new price.");
 	} else {
-		console.log("Price unchanged.");
+		console.log({
+			fetchedPrice: price,
+			lastPrice: last?.pricePerGram,
+			changed: last?.pricePerGram !== price,
+		});
 	}
 
 	const sevenDaysAgo = new Date();
