@@ -16,7 +16,7 @@ export async function GET(request: Request) {
 
 	try {
 		const res = await fetch(
-				'https://api.brsapi.ir/Market/Gold_Currency.php?key=BQ5cI32ZWyudV73G3A1fTZxKmgV7X4K4',
+				'https://httpbin.org/get',
 				{cache: 'no-store', signal: controller.signal}
 		);
 		clearTimeout(timeout);
@@ -69,11 +69,21 @@ export async function GET(request: Request) {
 
 	} catch (error) {
 		clearTimeout(timeout);
-		console.error('Cron gold fetch failed:', error);
-		// TEMP: return full error message in response so you can see it without digging through logs
+
+		console.error("FULL ERROR:", error);
+
+		if (error instanceof Error) {
+			console.error("MESSAGE:", error.message);
+			console.error("CAUSE:", error.cause);
+			console.error("STACK:", error.stack);
+		}
+
 		return Response.json(
-				{error: error instanceof Error ? error.message : String(error)},
-				{status: 500}
+				{
+					message: error instanceof Error ? error.message : String(error),
+					cause: error instanceof Error ? String(error.cause) : null,
+				},
+				{ status: 500 }
 		);
 	}
 }
