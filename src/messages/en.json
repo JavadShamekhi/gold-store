@@ -29,7 +29,26 @@
     "welcomeBack": "Welcome back!",
     "loginFailed": "Login failed",
     "authenticating": "Authenticating...",
-    "enterDashboard": "Enter Dashboard"
+    "enterDashboard": "Enter Dashboard",
+    "noAccount": "Don't have an account?",
+    "registerLink": "Register"
+  },
+  "register": {
+    "title": "Create your account",
+    "name": "Full name",
+    "namePlaceholder": "John Doe",
+    "email": "Email",
+    "password": "Password",
+    "invalidName": "Name must be at least 2 characters",
+    "invalidEmail": "Invalid email",
+    "minPassword": "Min 6 characters",
+    "creatingAccount": "Creating account...",
+    "createAccount": "Create account",
+    "accountCreated": "Account created! Please log in.",
+    "signupFailed": "Could not create account",
+    "haveAccount": "Already have an account?",
+    "loginLink": "Log in",
+    "registerFailed": "Registration failed. Please try again."
   },
   "admin": {
     "dashboard": "Dashboard",

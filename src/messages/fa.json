@@ -29,7 +29,26 @@
     "welcomeBack": "خوش آمدید!",
     "loginFailed": "ورود ناموفق بود",
     "authenticating": "در حال ورود...",
-    "enterDashboard": "ورود به پنل"
+    "enterDashboard": "ورود به پنل",
+    "noAccount": "حساب کاربری ندارید؟",
+    "registerLink": "ثبت نام"
+  },
+  "register": {
+    "title": "ساخت حساب کاربری",
+    "name": "نام و نام خانوادگی",
+    "namePlaceholder": "جواد شامخی",
+    "email": "ایمیل",
+    "password": "رمز عبور",
+    "invalidName": "نام باید حداقل ۲ کاراکتر باشد",
+    "invalidEmail": "ایمیل معتبر وارد کنید",
+    "minPassword": "رمز عبور باید حداقل ۶ کاراکتر باشد",
+    "creatingAccount": "در حال ایجاد حساب کاربری...",
+    "createAccount": "ایجاد حساب کاربری",
+    "accountCreated": "حساب کاربری با موفقیت ایجاد شد! لطفاً وارد شوید.",
+    "signupFailed": "ایجاد حساب کاربری ناموفق بود",
+    "haveAccount": "از قبل حساب کاربری دارید؟",
+    "loginLink": "ورود",
+    "registerFailed": "ثبت‌نام ناموفق بود. لطفاً دوباره تلاش کنید."
   },
   "admin": {
     "dashboard": "داشبورد",
