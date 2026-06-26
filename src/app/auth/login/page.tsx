@@ -18,7 +18,6 @@ import {Input} from '@/src/components/ui/input';
 import {Button} from '@/src/components/ui/button';
 import {useLocale} from '@/src/lib/i18n/LocaleProvider';
 import {useAuthStore} from "@/src/store/auth-store";
-import {tokenStorage} from "@/src/auth/token-storage";
 
 export default function LoginPage() {
 	const router = useRouter();
@@ -62,7 +61,6 @@ export default function LoginPage() {
 			if (!res.ok) {
 				throw new Error(data.message || dict.login.loginFailed);
 			}
-			tokenStorage.set(data.token);
 			login(data?.user);
 			toast.success(dict.login.welcomeBack);
 			router.refresh();
@@ -192,6 +190,18 @@ export default function LoginPage() {
 
 						</form>
 					</Form>
+
+					{/* LINK TO REGISTER */}
+					<p className="text-center text-sm text-[var(--foreground)]/60 mt-6">
+						{dict.login.noAccount}{' '}
+						<button
+								type="button"
+								onClick={() => router.push('/auth/register')}
+								className="text-[var(--primary)] hover:underline cursor-pointer"
+						>
+							{dict.login.registerLink}
+						</button>
+					</p>
 				</div>
 			</div>
 	);

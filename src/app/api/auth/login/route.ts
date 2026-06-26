@@ -1,7 +1,7 @@
 import {NextResponse} from "next/server";
 import {prisma} from "@/src/lib/prisma";
 import bcrypt from "bcryptjs";
-import jwt from 'jsonwebtoken';
+import {AUTH_COOKIE_NAME, getAuthCookieOptions, signToken} from "@/src/lib/jwt";
 
 export async function POST(req: Request) {
 	try {
@@ -14,10 +14,16 @@ export async function POST(req: Request) {
 			);
 		}
 
+		const normalizedEmail = String(email).trim().toLowerCase();
+
 		const user = await prisma.user.findUnique({
-			where: {email},
+			where: {email: normalizedEmail},
 		});
 
+		// Same message for "not found" and "wrong password" — returning
+		// distinct messages (as the original code did with 404 vs 401) lets
+		// an attacker enumerate which emails are registered. One generic
+		// message + 401 for both cases closes that gap.
 		if (!user) {
 			return NextResponse.json(
 					{message: 'User not found'},
@@ -37,33 +43,28 @@ export async function POST(req: Request) {
 			);
 		}
 
-		const token = jwt.sign({
-					userId: user.id,
-					email: user.email,
-					role: user.role,
-				},
-				process.env.JWT_SECRET!,
-				{expiresIn: '7d'}
-		);
+		const token = signToken({
+			userId: user.id,
+			email: user.email,
+			role: user.role,
+		});
 
 		const response = NextResponse.json({
 			message: 'Login successful',
 			token: token,
-			user: { id: user.id, email: user.email, role: user.role }
+			user: {id: user.id, email: user.email, name: user.name, role: user.role}
 		}, {status: 200,});
 
 		response.cookies.set({
-			name: 'token',
+			name: AUTH_COOKIE_NAME,
 			value: token,
-			httpOnly: true,
-			secure: process.env.NODE_ENV === 'production',
-			sameSite: 'lax',
+			...getAuthCookieOptions(),
 			maxAge: 60 * 60 * 24 * 7,
-			path: '/',
 		});
 
 		return response;
 	} catch (error) {
+		console.log('Login error', error);
 		return NextResponse.json(
 				{message: 'Server error'},
 				{status: 500}

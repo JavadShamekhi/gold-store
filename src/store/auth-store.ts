@@ -1,9 +1,9 @@
 import {create} from "zustand";
 import {persist} from "zustand/middleware";
-import {tokenStorage} from "@/src/auth/token-storage";
 
 type User = {
 	id: string;
+	name: string;
 	email: string;
 	role: string;
 };
@@ -12,7 +12,7 @@ type AuthStore = {
 	user: User | null;
 	isLoading: boolean;
 	login: (user: User) => void;
-	logout: () => void;
+	logout: () => Promise<void>;
 	checkAuth: () => Promise<void>;
 };
 
@@ -25,10 +25,10 @@ export const useAuthStore = create<AuthStore>()(
 					logout: async () => {
 						try {
 							await fetch('/api/auth/logout', {method: 'POST'});
-							set({user: null});
-							tokenStorage.remove();
 						} catch (error) {
 							console.error("Logout failed", error);
+						} finally {
+							set({user: null});
 						}
 					},
 
