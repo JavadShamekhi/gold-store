@@ -16,10 +16,22 @@ export async function GET(request: Request) {
 
 	try {
 		const res = await fetch(
-				'https://httpbin.org/get',
-				{cache: 'no-store', signal: controller.signal}
+				'https://api.brsapi.ir/Market/Gold_Currency.php?key=BQ5cI32ZWyudV73G3A1fTZxKmgV7X4K4',
+
+				{
+					headers: {
+						"User-Agent": "Mozilla/5.0",
+						"Accept": "application/json",
+					},
+					cache: 'no-store', signal: controller.signal
+				}
 		);
 		clearTimeout(timeout);
+
+		const body = await res.text();
+
+		console.log("STATUS:", res.status);
+		console.log("BODY:", body);
 
 		if (!res.ok) throw new Error(`API responded with ${res.status}`);
 
@@ -83,7 +95,7 @@ export async function GET(request: Request) {
 					message: error instanceof Error ? error.message : String(error),
 					cause: error instanceof Error ? String(error.cause) : null,
 				},
-				{ status: 500 }
+				{status: 500}
 		);
 	}
 }
