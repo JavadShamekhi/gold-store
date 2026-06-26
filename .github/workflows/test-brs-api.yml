@@ -1,0 +1,15 @@
+name: Test BRS API
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Test connection to BRS API
+        run: |
+          echo "Testing BRS API..."
+          curl -v --connect-timeout 20 \
+          "https://api.brsapi.ir/Market/Gold_Currency.php?key=${{ secrets.BRS_API_KEY }}"
