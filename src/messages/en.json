@@ -142,6 +142,12 @@
     "goldChart": {
       "priceChart": "Gold Price Chart",
       "fluctuations": "Live Market Fluctuations"
+    },
+    "goldTicker": {
+      "label": "18K Gold",
+      "loading": "Loading...",
+      "unavailable": "Unavailable",
+      "currency": "IRR"
     }
   },
   "language": {
