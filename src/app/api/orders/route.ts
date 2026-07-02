@@ -1,6 +1,6 @@
-import {NextRequest, NextResponse} from "next/server";
-import jwt from "jsonwebtoken";
-import {prisma} from "@/src/lib/prisma";
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/src/lib/prisma';
+import { getCurrentUser } from '@/src/lib/current-user';
 
 type CartItem = {
 	id: string;
@@ -9,53 +9,34 @@ type CartItem = {
 
 export async function POST(req: NextRequest) {
 	try {
-		const token = req.cookies.get('token')?.value;
+		const user = await getCurrentUser();
 
-		if (!token) {
-			return NextResponse.json(
-					{message: 'Unauthorized'},
-					{status: 401}
-			);
+		if (!user) {
+			return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 		}
 
-		const decoded = jwt.verify(
-				token,
-				process.env.JWT_SECRET!,
-		) as {
-			userId: string;
-		};
-
-		const {items}: { items: CartItem[] } = await req.json();
+		const { items }: { items: CartItem[] } = await req.json();
 
 		if (!items || !items.length) {
-			return NextResponse.json(
-					{message: 'Cart is empty'},
-					{status: 400}
-			);
+			return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
 		}
 
-		const productIds = items.map((item: CartItem) => item.id);
+		const productIds = items.map((item) => item.id);
 		const products = await prisma.product.findMany({
-			where: {
-				id: {
-					in: productIds,
-				},
-			},
+			where: { id: { in: productIds } },
 		});
 
 		let totalPrice = 0;
 
 		const orderItems = items.map((cartItem) => {
-			const product = products.find(
-					(p) => p.id === cartItem.id
-			);
+			const product = products.find((p) => p.id === cartItem.id);
 
 			if (!product) {
-				throw new Error('Product not found');
+				throw new Error('PRODUCT_NOT_FOUND');
 			}
 
 			if (product.stock < cartItem.quantity) {
-				throw new Error(`${product.title} is out of stock`);
+				throw new Error(`OUT_OF_STOCK:${product.title}`);
 			}
 
 			totalPrice += product.price * cartItem.quantity;
@@ -67,43 +48,58 @@ export async function POST(req: NextRequest) {
 			};
 		});
 
-		const order = await prisma.order.create({
-			data: {
-				totalPrice,
-				userId: decoded.userId,
-				items: {
-					create: orderItems,
-				},
-			},
-			include: {
-				items: true,
-			},
-		});
+		const order = await prisma.$transaction(async (tx) => {
+			for (const item of items) {
+				const result = await tx.product.updateMany({
+					where: {
+						id: item.id,
+						stock: { gte: item.quantity },
+					},
+					data: {
+						stock: { decrement: item.quantity },
+					},
+				});
 
-		for (const item of items) {
-			await prisma.product.update({
-				where: {
-					id: item.id,
-				},
+				if (result.count === 0) {
+					throw new Error('STOCK_CHANGED');
+				}
+			}
+
+			return tx.order.create({
 				data: {
-					stock: {
-						decrement: item.quantity,
+					totalPrice,
+					userId: user.userId,
+					items: {
+						create: orderItems,
 					},
 				},
+				include: {
+					items: true,
+				},
 			});
-		}
+		});
 
 		return NextResponse.json(order);
 	} catch (error) {
-		console.error(error);
+		if (error instanceof Error) {
+			if (error.message === 'PRODUCT_NOT_FOUND') {
+				return NextResponse.json({ error: 'One or more products no longer exist' }, { status: 400 });
+			}
+			if (error.message.startsWith('OUT_OF_STOCK:')) {
+				return NextResponse.json(
+						{ error: `${error.message.split(':')[1]} is out of stock` },
+						{ status: 400 }
+				);
+			}
+			if (error.message === 'STOCK_CHANGED') {
+				return NextResponse.json(
+						{ error: 'Stock changed before your order could complete, please try again' },
+						{ status: 409 }
+				);
+			}
+		}
 
-		return NextResponse.json(
-				{
-					message: 'Failed to create a order',
-				},
-				{
-					status: 500,
-				}
-		);
+		console.error(error);
+		return NextResponse.json({ error: 'Failed to create order' }, { status: 500 });
 	}
 }

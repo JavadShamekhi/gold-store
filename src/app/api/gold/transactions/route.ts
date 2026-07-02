@@ -1,21 +1,42 @@
-import {prisma} from "@/src/lib/prisma";
+import {NextResponse} from 'next/server';
+import {prisma} from '@/src/lib/prisma';
+import {getCurrentUser} from '@/src/lib/current-user';
 
 export async function GET(req: Request) {
 	try {
-		const {searchParams} = new URL(req.url);
-		const userId = searchParams.get("userId");
+		const user = await getCurrentUser();
 
-		if (!userId) {
-			return Response.json({error: "Missing userId"}, {status: 400});
+		if (!user) {
+			return NextResponse.json({error: 'Unauthorized'}, {status: 401});
 		}
 
-		const data = await prisma.goldTransaction.findMany({
-			where: {userId},
-			orderBy: {createdAt: "desc"},
+		const {searchParams} = new URL(req.url);
+		const requestedUserId = searchParams.get('userId');
+
+		let targetUserId = user.userId;
+
+		if (requestedUserId && requestedUserId !== user.userId) {
+			const dbUser = await prisma.user.findUnique({
+				where: {id: user.userId},
+				select: {role: true},
+			});
+
+			if (dbUser?.role !== 'ADMIN') {
+				return NextResponse.json({error: 'Forbidden'}, {status: 403});
+			}
+
+			targetUserId = requestedUserId;
+		}
+
+		const transactions = await prisma.goldTransaction.findMany({
+			where: {userId: targetUserId},
+			orderBy: {createdAt: 'desc'},
+			take: 100,
 		});
 
-		return Response.json(data);
-	} catch (err) {
-		return Response.json({error: "Server error"}, {status: 500});
+		return NextResponse.json(transactions);
+	} catch (error) {
+		console.error('Transaction history error:', error);
+		return NextResponse.json({error: 'Failed to load history'}, {status: 500});
 	}
 }

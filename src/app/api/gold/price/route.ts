@@ -1,5 +1,4 @@
 import {prisma} from '@/src/lib/prisma';
-import {number, string} from "zod";
 
 export const runtime = 'nodejs';
 
