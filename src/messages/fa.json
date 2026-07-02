@@ -141,13 +141,72 @@
   "gold": {
     "goldChart": {
       "priceChart": "نمودار قیمت طلا",
-      "fluctuations": "آخرین نوسانات بازار"
+      "fluctuations": "آخرین نوسانات بازار",
+      "currency": "ریال"
     },
     "goldTicker": {
       "label": "طلای ۱۸ عیار",
       "loading": "در حال بارگذاری...",
       "unavailable": "موجود نیست",
       "currency": "ریال"
+    },
+    "priceCard": {
+      "label": "قیمت طلا",
+      "currency": "ریال"
+    },
+    "balanceCard": {
+      "label": "موجودی طلا",
+      "unit": "گرم"
+    },
+    "dashboard": {
+      "loading": "در حال بارگذاری داشبورد...",
+      "totalValue": "ارزش کل",
+      "currency": "ریال",
+      "priceChart": "نمودار قیمت"
+    },
+    "history": {
+      "title": "تراکنش‌های اخیر",
+      "buy": "خرید",
+      "sell": "فروش",
+      "loading": "در حال بارگذاری تراکنش‌ها...",
+      "error": "بارگذاری تراکنش‌ها ناموفق بود.",
+      "empty": "هنوز تراکنشی ثبت نشده."
+    },
+    "actions": {
+      "buy": "خرید طلا",
+      "sell": "فروش طلا"
+    },
+    "buyPage": {
+      "title": "خرید طلا",
+      "currentPrice": "قیمت فعلی",
+      "loadingPrice": "در حال بارگذاری قیمت...",
+      "gramsLabel": "مقدار (گرم)",
+      "totalLabel": "مبلغ کل",
+      "submit": "تأیید خرید",
+      "submitting": "در حال پردازش...",
+      "success": "خرید طلا با موفقیت انجام شد",
+      "genericError": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
+      "errors": {
+        "invalidType": "لطفاً یک عدد معتبر وارد کنید",
+        "positive": "باید بیشتر از ۰ باشد",
+        "tooLarge": "مقدار خیلی زیاد است"
+      }
+    },
+    "sellPage": {
+      "title": "فروش طلا",
+      "availableBalance": "موجودی قابل فروش",
+      "loadingBalance": "در حال بارگذاری موجودی...",
+      "gramsLabel": "مقدار (گرم)",
+      "totalLabel": "مبلغ دریافتی",
+      "submit": "تأیید فروش",
+      "submitting": "در حال پردازش...",
+      "success": "فروش طلا با موفقیت انجام شد",
+      "genericError": "مشکلی پیش آمد. لطفاً دوباره تلاش کنید.",
+      "errors": {
+        "invalidType": "لطفاً یک عدد معتبر وارد کنید",
+        "positive": "باید بیشتر از ۰ باشد",
+        "exceedsBalance": "موجودی شما کافی نیست"
+      }
     }
   },
   "language": {

@@ -123,7 +123,7 @@
       "weight": "Weight",
       "stock": "Stock",
       "wishlist": "Wishlist",
-      "currency": "$",
+      "currency": "IRR",
       "unit": "g"
     }
   },
@@ -141,13 +141,72 @@
   "gold": {
     "goldChart": {
       "priceChart": "Gold Price Chart",
-      "fluctuations": "Live Market Fluctuations"
+      "fluctuations": "Live Market Fluctuations",
+      "currency": "IRR"
     },
     "goldTicker": {
       "label": "18K Gold",
       "loading": "Loading...",
       "unavailable": "Unavailable",
       "currency": "IRR"
+    },
+    "priceCard": {
+      "label": "Gold Price",
+      "currency": "IRR"
+    },
+    "balanceCard": {
+      "label": "Gold Balance",
+      "unit": "g"
+    },
+    "dashboard": {
+      "loading": "Loading dashboard...",
+      "totalValue": "Total Value",
+      "currency": "IRR",
+      "priceChart": "Price Chart"
+    },
+    "history": {
+      "title": "Recent Transactions",
+      "buy": "BUY",
+      "sell": "SELL",
+      "loading": "Loading transactions...",
+      "error": "Couldn't load transactions.",
+      "empty": "No transactions yet."
+    },
+    "actions": {
+      "buy": "Buy Gold",
+      "sell": "Sell Gold"
+    },
+    "buyPage": {
+      "title": "Buy Gold",
+      "currentPrice": "Current price",
+      "loadingPrice": "Loading price...",
+      "gramsLabel": "Amount (grams)",
+      "totalLabel": "Total",
+      "submit": "Confirm Purchase",
+      "submitting": "Processing...",
+      "success": "Gold purchased successfully",
+      "genericError": "Something went wrong. Please try again.",
+      "errors": {
+        "invalidType": "Enter a valid number",
+        "positive": "Must be greater than 0",
+        "tooLarge": "Amount too large"
+      }
+    },
+    "sellPage": {
+      "title": "Sell Gold",
+      "availableBalance": "Available balance",
+      "loadingBalance": "Loading balance...",
+      "gramsLabel": "Amount (grams)",
+      "totalLabel": "You'll receive",
+      "submit": "Confirm Sale",
+      "submitting": "Processing...",
+      "success": "Gold sold successfully",
+      "genericError": "Something went wrong. Please try again.",
+      "errors": {
+        "invalidType": "Enter a valid number",
+        "positive": "Must be greater than 0",
+        "exceedsBalance": "Exceeds your balance"
+      }
     }
   },
   "language": {
