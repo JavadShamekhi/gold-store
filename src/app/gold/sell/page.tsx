@@ -31,8 +31,12 @@ export default function SellGoldPage() {
 					z.object({
 						grams: z.coerce
 								.number({
-									invalid_type_error:
-											dict?.gold.sellPage.errors.invalidType ?? 'Enter a valid number',
+									error: (issue) => {
+										if (issue.code === 'invalid_type') {
+											return dict?.gold.sellPage.errors.invalidType ?? 'Enter a valid number';
+										}
+										return 'Invalid input';
+									},
 								})
 								.positive(dict?.gold.sellPage.errors.positive ?? 'Must be greater than 0')
 								.max(
@@ -46,7 +50,7 @@ export default function SellGoldPage() {
 	type SellFormValues = z.infer<typeof sellSchema>;
 
 	const form = useForm<SellFormValues>({
-		resolver: zodResolver(sellSchema),
+		resolver: zodResolver(sellSchema) as any,
 		defaultValues: {grams: 0},
 	});
 

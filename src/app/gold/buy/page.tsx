@@ -30,8 +30,12 @@ export default function BuyGoldPage() {
 					z.object({
 						grams: z.coerce
 								.number({
-									invalid_type_error:
-											dict?.gold.buyPage.errors.invalidType ?? 'Enter a valid number',
+									error: (issue) => {
+										if (issue.code === 'invalid_type') {
+											return dict?.gold.buyPage.errors.invalidType ?? 'Enter a valid number';
+										}
+										return 'Invalid input';
+									},
 								})
 								.positive(dict?.gold.buyPage.errors.positive ?? 'Must be greater than 0')
 								.max(10000, dict?.gold.buyPage.errors.tooLarge ?? 'Amount too large'),
@@ -42,7 +46,7 @@ export default function BuyGoldPage() {
 	type BuyFormValues = z.infer<typeof buySchema>;
 
 	const form = useForm<BuyFormValues>({
-		resolver: zodResolver(buySchema),
+		resolver: zodResolver(buySchema) as any,
 		defaultValues: {grams: 0},
 	});
 
