@@ -11,7 +11,8 @@ import {
 	ResponsiveContainer,
 } from 'recharts';
 import {TrendingUp, Activity} from 'lucide-react';
-import {useLocale} from "@/src/lib/i18n/LocaleProvider";
+import {useLocale} from '@/src/lib/i18n/LocaleProvider';
+import {formatNumber} from "@/src/lib/i18n/formatters";
 
 interface HistoryItem {
 	price: number;
@@ -21,7 +22,7 @@ interface HistoryItem {
 export default function GoldChart() {
 	const [data, setData] = useState<HistoryItem[]>([]);
 	const [loading, setLoading] = useState(true);
-	const {dict} = useLocale();
+	const {dict, locale} = useLocale();
 
 	useEffect(() => {
 		const fetchHistory = async () => {
@@ -40,11 +41,10 @@ export default function GoldChart() {
 
 	if (!dict) return null;
 
-	// Format price for Y-Axis and Tooltip
-	const formatPrice = (price: number) =>
-			new Intl.NumberFormat(dict.language.lng).format(price);
+	// Price is stored per-gram in USD-equivalent units; *10 converts to IRR, matching GoldTicker
+	const formattedPrice = (price: number) =>
+			price !== null ? formatNumber(price * 10, locale) : null;
 
-	// Format time for X-Axis
 	const formatXAxis = (tickItem: string) => {
 		const date = new Date(tickItem);
 		return date.toLocaleTimeString(dict.language.lng, {
@@ -82,7 +82,7 @@ export default function GoldChart() {
 
 				<div className="h-[300px] w-full">
 					<ResponsiveContainer width="100%" height="100%">
-						<AreaChart data={data}>
+						<AreaChart key={locale} data={data}>
 							<defs>
 								<linearGradient id="colorPrice" x1="0" y1="0" x2="0" y2="1">
 									<stop offset="5%" stopColor="var(--primary)" stopOpacity={0.3}/>
@@ -107,14 +107,9 @@ export default function GoldChart() {
 									minTickGap={30}
 							/>
 
-							<YAxis
-									hide={true}
-									domain={['auto', 'auto']}
-							/>
+							<YAxis hide={true} domain={['auto', 'auto']}/>
 
-							<Tooltip
-									content={<CustomTooltip dict={dict}/>}
-							/>
+							<Tooltip content={<CustomTooltip dict={dict} formatPrice={formattedPrice}/>}/>
 
 							<Area
 									type="monotone"
@@ -132,8 +127,7 @@ export default function GoldChart() {
 	);
 }
 
-// Custom Premium Tooltip Component
-const CustomTooltip = ({active, payload, label, dict}: any) => {
+const CustomTooltip = ({active, payload, label, dict, formatPrice}: any) => {
 	if (active && payload && payload.length) {
 		const price = payload[0].value;
 		const date = new Date(label);
@@ -146,11 +140,11 @@ const CustomTooltip = ({active, payload, label, dict}: any) => {
 							month: 'short',
 							day: 'numeric',
 							hour: '2-digit',
-							minute: '2-digit'
+							minute: '2-digit',
 						})}
 					</p>
 					<p className="text-xl font-bold text-[var(--primary)] tabular-nums">
-						${new Intl.NumberFormat().format(price)}
+						{`${formatPrice(price)} ${dict.gold.goldChart.currency}`}
 					</p>
 				</div>
 		);
