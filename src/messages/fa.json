@@ -136,6 +136,27 @@
     "collection": {
       "subtitle": "مجموعه محصولات",
       "title": "محصولات ویژه"
+    },
+    "about": {
+      "subtitle": "ما که هستیم",
+      "title": "درباره ما",
+      "description": "...",
+      "stats": {
+        "yearsValue": "+۱۰",
+        "yearsLabel": "سال تجربه",
+        "customersValue": "+۵۰۰۰",
+        "customersLabel": "مشتری راضی"
+      }
+    },
+    "contact": {
+      "subtitle": "در ارتباط باشید",
+      "title": "تماس با ما",
+      "phoneLabel": "تلفن",
+      "phoneValue": "...",
+      "emailLabel": "ایمیل",
+      "emailValue": "...",
+      "addressLabel": "آدرس",
+      "addressValue": "..."
     }
   },
   "gold": {

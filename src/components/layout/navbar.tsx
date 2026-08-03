@@ -73,8 +73,8 @@ const Navbar = () => {
 						<nav className="hidden md:flex items-center justify-center gap-8 text-sm">
 							<Link className="hover:text-[var(--primary)] transition" href="/">{dict?.navbar.home}</Link>
 							<Link className="hover:text-[var(--primary)] transition" href="/products">{dict?.navbar.products}</Link>
-							<Link className="hover:text-[var(--primary)] transition" href="/about">{dict?.navbar.about}</Link>
-							<Link className="hover:text-[var(--primary)] transition" href="/contact">{dict?.navbar.contact}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/#about">{dict?.navbar.about}</Link>
+							<Link className="hover:text-[var(--primary)] transition" href="/#contact">{dict?.navbar.contact}</Link>
 						</nav>
 
 						{/* 3. Right Part (User, Darkmode, Cart) */}
