@@ -136,6 +136,27 @@
     "collection": {
       "subtitle": "Collection",
       "title": "Featured Products"
+    },
+    "about": {
+      "subtitle": "Who We Are",
+      "title": "About Us",
+      "description": "...",
+      "stats": {
+        "yearsValue": "10+",
+        "yearsLabel": "Years of Experience",
+        "customersValue": "5,000+",
+        "customersLabel": "Happy Customers"
+      }
+    },
+    "contact": {
+      "subtitle": "Get in Touch",
+      "title": "Contact Us",
+      "phoneLabel": "Phone",
+      "phoneValue": "+98 21 ...",
+      "emailLabel": "Email",
+      "emailValue": "info@zarringoldstore.ir",
+      "addressLabel": "Address",
+      "addressValue": "..."
     }
   },
   "gold": {
